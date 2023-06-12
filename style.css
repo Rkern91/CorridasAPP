@@ -1,0 +1,135 @@
+.container {
+  text-align : center;
+}
+
+/* ESTILIZACAO DE CAMPOS */
+label {
+  font-size     : 15px;
+  margin-right  : 10px;
+  margin-left   : 1px;
+  margin-bottom : 3px;
+}
+
+label > input[type=radio] {
+  margin-right : 2px;
+}
+
+select, input {
+  text-align : left;
+  display    : inline-block;
+}
+
+/* ESTILIZACAO DE TABELAS E SUA ESTRUTURA */
+table {
+  border-collapse : collapse;
+  margin          : auto auto 20px;
+}
+
+table.erro th {
+  color            : #ffffff;
+  font-size        : 12px;
+  padding          : 9px;
+  background-color : #a00000;
+  border           : 1px solid #a00000;
+}
+
+table.erro td {
+  color         : #a00000;
+  font-size     : 9px;
+  padding       : 6px;
+  border        : 1px solid #a00000;
+  text-align    : left;
+  border-radius : 10px;
+}
+
+th, td {
+  border      : 1px solid #000077;
+  font-family : Arial, Helvetica, Tahoma, Geneva, sans-serif;
+}
+
+th {
+  color            : #ffffff;
+  font-size        : 15px;
+  padding          : 12px;
+  background-color : #000077;
+}
+
+td {
+  text-align: left;
+  color     : #000077;
+  font-size : 12px;
+  padding   : 9px;
+}
+
+/* ESTILIZACAO DE HEADERS-TITULOS*/
+h1, h2, h3, h4, h5 {
+  font-family : Arial, Helvetica, Tahoma, Geneva, sans-serif;
+  font-weight : bold;
+  color       : #000077;
+}
+
+h1 { font-size : 21px; }
+
+h2 { font-size : 19px; }
+
+h3 { font-size : 17px; }
+
+h4 { font-size : 15px; }
+
+h5 { font-size : 13px; }
+
+/* ESTILIZACAO DE LINKS */
+A:link {
+  font-family     : Arial, Helvetica, Tahoma, Geneva, sans-serif;
+  font-size       : 12pt;
+  text-decoration : none;
+  color           : #0000FF
+}
+
+A:visited {
+  font-family     : Arial, Helvetica, Tahoma, Geneva, sans-serif;
+  font-size       : 12pt;
+  text-decoration : none;
+  color           : #0000FF
+}
+
+A:hover {
+  font-family     : Arial, Helvetica, Tahoma, Geneva, sans-serif;
+  font-size       : 12pt;
+  text-decoration : underline;
+  color           : #FF0000
+}
+
+A.white:link {
+  font-family     : Arial, Helvetica, Tahoma, Geneva, sans-serif;
+  font-size       : 10pt;
+  text-decoration : none;
+  color           : #FFFFFF;
+  font-weight     : bold;
+}
+
+A.white:visited {
+  font-family     : Arial, Helvetica, Tahoma, Geneva, sans-serif;
+  font-size       : 10pt;
+  text-decoration : none;
+  color           : #FFFFFF;
+  font-weight     : bold;
+}
+
+A.white:hover {
+  font-family     : Arial, Helvetica, Tahoma, Geneva, sans-serif;
+  font-size       : 10pt;
+  text-decoration : none;
+  color           : #FFFFFF;
+  font-weight     : bold;
+}
+
+a {
+  cursor : pointer;
+  color  : #0000ff;
+}
+
+a:hover {
+  color           : #dd0000;
+  text-decoration : underline;
+}
