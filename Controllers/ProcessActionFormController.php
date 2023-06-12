@@ -51,9 +51,9 @@
       try
       {
         //Monta o nome do metodo que vai ser chamado na classe.
-        $formAction   = "{$this->formAction}Acao";
-        $ActionCidade = new $this->opNmClass[$this->nmTabela]($this->arrRequest);
-        $ActionCidade->{$formAction}();
+        $formAction = "{$this->formAction}Acao";
+        $ActionCall = new $this->opNmClass[$this->nmTabela]($this->arrRequest);
+        $ActionCall->{$formAction}();
         
         header("Location: ../View/sel_{$this->nmTabela}.php?id_operacao={$this->formAction}");
         exit;
