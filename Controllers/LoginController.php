@@ -16,14 +16,13 @@
     public function __construct()
     {
       $this->Usuario = new Usuario($_REQUEST["ds_email"], $_REQUEST["ds_senha"]);
-      $this->realizarLoginUsuario();
     }
     
     /**
      * Executa o login do usuario e direciona para a tela de entrada.
      * @throws Exception
      */
-    private function realizarLoginUsuario()
+    public function realizarLoginUsuario()
     {
       if (!$this->Usuario->realizarLogin())
       {

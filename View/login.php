@@ -34,7 +34,10 @@
   try
   {
     if (isset($_POST["ds_email"]))
+    {
       $LoginController = new LoginController();
+      $LoginController->realizarLoginUsuario();
+    }
   }
   catch (Exception $e)
   {

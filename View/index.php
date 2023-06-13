@@ -8,6 +8,7 @@
   <body>
     <div class="container">
       <?php new TelaUserLoginController(); ?>
+      <p><a href="login.php">Sair</a></p>
     </div>
   </body>
 </html>
