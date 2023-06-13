@@ -27,12 +27,19 @@
       if (!$this->Usuario->realizarLogin())
       {
         session_destroy();
-        echo "<h1>Usuário ou senha incorretos.</h1>";
+        echo "<script>
+                  alert('Usuário ou senha incorretos');
+              </script>";
       }
       else
       {
         $_SESSION["id_tipo_usuario"]  = $this->Usuario->getCdIdTipo();
-        $_SESSION["ds_email_usuario"] = $this->Usuario->getDsEmail();
+        $_SESSION["cd_pessoa"]        = $this->Usuario->getCdPessoa();
+        
+        echo "<script>
+                alert('Login realizado com sucesso!');
+                
+              </script>";
         
         $dsMsgSucess = "Login relizado com sucesso!";
         header("Location: index.php?dsOrigem=login&dsMensagem=" . urlencode($dsMsgSucess));

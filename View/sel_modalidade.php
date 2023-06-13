@@ -47,8 +47,8 @@ HTML;
   //Define a operacao executada ao chamar a tela e cria um alerta
   if (isset($_REQUEST["id_operacao"]))
   {
-    $dsCampoHidden = "<input type=\"hidden\" class=\"ds_operacao\" value=\"{$_REQUEST["id_operacao"]}\">" .
-                     "<input type=\"hidden\" class=\"ds_origem\"   value=\"modalidade\">";
+    $dsCampoHidden = "<input type=\"hidden\" id=\"ds_operacao\" value=\"{$_REQUEST["id_operacao"]}\">" .
+                     "<input type=\"hidden\" id=\"ds_origem\"   value=\"modalidade\">";
   }
 ?>
 

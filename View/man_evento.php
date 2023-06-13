@@ -4,7 +4,7 @@
 
 <!DOCTYPE HTML>
 <html lang="pt-BR">
-<!--  --><?php //require_once("../head.php"); ?>
+  <?php require_once("head.php"); ?>
   <body>
     <div class="container">
       <h3>Manutenção de Evento</h3>
@@ -26,5 +26,6 @@
       <p><a href="sel_evento.php">Listagem de Eventos</a></p>
     </div>
   </body>
+  <?php include("footer.html");?>
 </html>
 

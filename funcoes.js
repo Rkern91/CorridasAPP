@@ -1,3 +1,69 @@
+/////////////////////////////////////////
+// FUNCOES EXECUTADAS NA TELA DE LOGIN //
+/////////////////////////////////////////
+
+function verificarAcaoFormLogin()
+{
+// case 'login':
+//   alert('Login realizado com sucesso!');
+//   break;
+}
+
+function validarCamposLogin()
+{
+  var idTabela    = document.getElementById('id_tabela').value;
+  var dsMsg     = '';
+  var arrFields = '';
+  
+  switch (idTabela)
+  {
+    case 'login':
+      arrFields = {
+        'ds_email' : 'Email',
+        'ds_senha' : 'Senha'
+      };
+    break;
+    case 'pessoa':
+      arrFields = {
+        'nm_pessoa'     : 'Nome',
+        'dt_nascimento' : 'Dt. Nascimento',
+        'nr_telefone'   : 'Telefone',
+        'ds_email'      : 'Email',
+        'ds_sexo'       : 'Sexo',
+        'cd_id_tipo'    : 'Tipo Usuário',
+        'ds_senha'      : 'Senha'
+      };
+    break;
+  }
+  
+  for (var key in arrFields)
+  {
+    if (arrFields.hasOwnProperty(key))
+    {
+      var objCampo = document.getElementById(key.toString());
+      
+      if (!hasValue(objCampo.value))
+      {
+        dsMsg = 'Por favor, preencha o campo ' + arrFields[key] + '!';
+        objCampo.focus();
+        break;
+      }
+    }
+  }
+  
+  if (dsMsg != '')
+  {
+    alert(dsMsg);
+    return false;
+  }
+  else
+    return true;
+}
+
+//////////////////////////////////////////////
+// FUNCOES EXECUTADAS NA TELA DE MANUTENCAO //
+//////////////////////////////////////////////
+
 /**
  * Remove caracteres invalidos.
  * @param inputField
@@ -5,7 +71,7 @@
 function validateInput(inputField)
 {
   var nmTabela = document.getElementById('id_tabela').value.toString();
-
+  
   // Express?o regular para encontrar caracteres inv?lidos (n?o letras e espa?os)
   var dsRegex      = nmTabela == 'cidade' ? /[^a-zA-Z\/\s\-]/g : /[^a-zA-Z0-9\/\s\-]/g;
   var inputValue   = inputField.value.toUpperCase();
@@ -52,7 +118,7 @@ function alterarTextoModalidadesSelecionadas(dsTexto, idOp)
         
         objTextoModals.value = dsModal;
       }
-    break;
+      break;
     case 'rem':
       //Remove o texto do array as modalidades selecionadas
       if (Array.isArray(arrDsModal) && arrDsModal.length > 0 && arrDsModal.includes(dsTexto))
@@ -71,7 +137,7 @@ function alterarTextoModalidadesSelecionadas(dsTexto, idOp)
         //Define o valor final novamente no campo
         objTextoModals.value = dsModal;
       }
-    break;
+      break;
   }
 }
 
@@ -118,14 +184,14 @@ function alterarModalidadesSelecionadas(idOp)
         }
         else
           dsSelectedModal = objModal.value;
-
+        
         qtModalAtual++;
         qtModalidades.value = qtModalAtual;
         objArrModal.value   = dsSelectedModal;
         
         alterarTextoModalidadesSelecionadas(dsTexto, idOp);
       }
-    break;
+      break;
     case 'rem':
       //Remove do array as modalidades selecionadas e nao submete junto ao form
       if (Array.isArray(arrOptModal) && arrOptModal.length > 0 && arrOptModal.includes(objModal.value))
@@ -139,7 +205,7 @@ function alterarModalidadesSelecionadas(idOp)
           else
             dsSelectedModal = dsSelectedModal + ',' + value;
         })
-    
+        
         if (qtModalAtual > 0)
           qtModalAtual--;
         
@@ -148,7 +214,7 @@ function alterarModalidadesSelecionadas(idOp)
         
         alterarTextoModalidadesSelecionadas(dsTexto, idOp);
       }
-    break;
+      break;
   }
 }
 
@@ -203,49 +269,48 @@ function hasValue(vl)
  */
 function validarCampos()
 {
-  var idTela    = document.getElementById('id_tabela').value;
+  //Se o valor setado no campo estiver para deletar, nao precisa seguir as validacoes abaixo
+  if (document.querySelector('input[name="f_action"]:checked').value === 'deletar')
+    return true;
+
+  var idTabela    = document.getElementById('id_tabela').value;
   var dsMsg     = '';
   var arrFields = '';
-  
-  switch (idTela)
+
+  switch (idTabela)
   {
     case 'evento':
       arrFields = {
-        'nm_evento': 'Evento',
-        'cd_cidade': 'Cidade',
-        'dt_evento': 'Data',
-        'hr_evento': 'Hora',
-        'arr_cd_modalidades': 'Modalidade'
+        'nm_evento'          : 'Evento',
+        'cd_cidade'          : 'Cidade',
+        'dt_evento'          : 'Data',
+        'hr_evento'          : 'Hora',
+        'arr_cd_modalidades' : 'Modalidade'
       };
     break
     case 'modalidade':
       arrFields = {
-        'ds_descricao': 'Modalidade',
-        'vl_valor': 'Valor (R$)',
-        'vl_km_distancia': 'Distância (KM)',
-        'dt_largada_modalidade': 'Data',
-        'hr_largada_modalidade': 'Hora'
+        'ds_descricao'          : 'Modalidade',
+        'vl_valor'              : 'Valor (R$)',
+        'vl_km_distancia'       : 'Distância (KM)',
+        'dt_largada_modalidade' : 'Data',
+        'hr_largada_modalidade' : 'Hora'
       };
     break;
     case 'cidade':
       arrFields = {
-        'nm_cidade': 'Cidade',
-        'cd_uf': 'Estado'
+        'nm_cidade' : 'Cidade',
+        'cd_uf'     : 'Estado'
       };
     break;
-    case 'login':
-      arrFields = {
-        'ds_email': 'Email',
-        'ds_senha': 'Senha'
-      };
   }
-  
+
   for (var key in arrFields)
   {
     if (arrFields.hasOwnProperty(key))
     {
       var objCampo = document.getElementById(key.toString());
-      
+
       if (!hasValue(objCampo.value))
       {
         dsMsg = 'Por favor, preencha o campo ' + arrFields[key] + '!';
@@ -254,7 +319,7 @@ function validarCampos()
       }
     }
   }
-  
+
   if (dsMsg != '')
   {
     alert(dsMsg);
@@ -270,30 +335,33 @@ function validarCampos()
  */
 function verificarAcaoForm()
 {
-  const idOperacao = document.getElementsByClassName('ds_operacao');
+  const idOperacao = document.getElementById('ds_operacao');
   
-  if (idOperacao.length > 0)
+  if (idOperacao ?? false)
   {
-    const dsOrigem = document.getElementsByClassName('ds_origem');
+    const dsOrigem = document.getElementById('ds_origem');
     var   dsLink   = '';
     var   dsTexto  = '';
     
-    switch (idOperacao[0].value)
+    switch (idOperacao.value)
     {
-      case 'delete':
+      case 'deletar':
         alert('Registro REMOVIDO com sucesso!');
-      break;
-      case 'update':
+        break;
+      case 'atualizar':
         alert('Registro ATUALIZADO com sucesso!');
-      break;
-      case 'insert':
+        break;
+      case 'inserir':
         alert('Registro INSERIDO com sucesso!');
       break;
-      case 'login':
-        alert('Login realizado com sucesso!');
+      case 'deslogar':
+        alert('Deslogado com sucesso!');
+      break;
+      case 'cadastro':
+        alert('Cadastro efetuado com sucesso, faça login!');
       break;
       case 'cadastrar':
-        switch (dsOrigem[0].value)
+        switch (dsOrigem.value)
         {
           case 'cidade':
             dsLink  = 'man_cidade.php';
@@ -312,20 +380,43 @@ function verificarAcaoForm()
         if (confirm(dsTexto))
           window.location.href = dsLink;
         else
-          window.location.href = 'View/index.php';
-      break;
+          window.location.href = 'index.php';
+        break;
     }
   }
 }
 
+////////////////////////////////////////////
+// FUNCOES EXECUTADAS NA TELA DE LISTAGEM //
+////////////////////////////////////////////
+
+//EXECUTA AO CARREGAR DOCUMENTO
 document.addEventListener('DOMContentLoaded', function(){
   verificarAcaoForm();
-  
-  document.getElementById('form').addEventListener('submit', function(ev){
-    ev.preventDefault();
-    
-    if (validarCampos())
-      document.getElementById('form').submit();
-  });
+
+  //Se existe o elemento abaixo esta em uma tela com formulario e precisa validar alguns campos
+  if (document.getElementById('form') ?? false)
+  {
+    console.log('Tem o form');
+    document.getElementById('form').addEventListener('submit', function(ev){
+      const idTela = document.getElementById('id_tela').value;
+      ev.preventDefault();
+      
+      console.log(idTela);
+      switch (idTela)
+      {
+        case 'login':
+        case 'cadastro':
+          if (validarCamposLogin())
+            document.getElementById('form').submit();
+        break;
+        case 'manutencao':
+        case 'listagem':
+          if (validarCampos())
+            document.getElementById('form').submit();
+        break;
+      }
+    });
+  }
 });
 

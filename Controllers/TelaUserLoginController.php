@@ -41,6 +41,7 @@
             </tr>
           </tbody>
         </table>
+        <p><a href="logout.php?cd_pessoa={$_SESSION["cd_pessoa"]}">Sair</a></p>
 HTML;
     }
     
@@ -68,6 +69,7 @@ HTML;
             </tr>
           </tbody>
         </table>
+        <p><a href="logout.php?cd_pessoa={$_SESSION["cd_pessoa"]}">Sair</a></p>
 HTML;
     }
   }

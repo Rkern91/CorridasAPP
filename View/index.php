@@ -1,5 +1,7 @@
 <?php
   require_once("../Controllers/TelaUserLoginController.php");
+  require_once("../helpers.inc.php");
+  
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +10,7 @@
   <body>
     <div class="container">
       <?php new TelaUserLoginController(); ?>
-      <p><a href="login.php">Sair</a></p>
     </div>
   </body>
+  <?php include("footer.html");?>
 </html>

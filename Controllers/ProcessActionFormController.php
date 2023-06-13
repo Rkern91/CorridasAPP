@@ -22,7 +22,8 @@
     protected array $opNmClass = [
       "cidade"     => "FormCidade",
       "evento"     => "FormEvento",
-      "modalidade" => "FormModalidade"
+      "modalidade" => "FormModalidade",
+      "pessoa"     => "FormUsuario"
     ];
     
     public string $nmTabela;
@@ -55,6 +56,12 @@
         $ActionCall = new $this->opNmClass[$this->nmTabela]($this->arrRequest);
         $ActionCall->{$formAction}();
         
+        if ($this->nmTabela == "pessoa")
+        {
+          header("Location: ../View/login.php?id_operacao=cadastro");
+          exit;
+        }
+        
         header("Location: ../View/sel_{$this->nmTabela}.php?id_operacao={$this->formAction}");
         exit;
       }
@@ -73,7 +80,7 @@
     protected function padronizarRetornoErro($dsMensagem)
     {
       $error_message = "Erro ao {$this->formAction} registro. {$dsMensagem}";
-      header("Location: ../erro.php?id_erro=" . ConexaoBanco::$opIdErrosBd[$this->formAction] . "&dsOrigem={$this->nmTabela}&dsMensagem=" . urlencode($error_message));
+      header("Location: ../View/erro.php?id_erro=" . ConexaoBanco::$opIdErrosBd[$this->formAction] . "&dsOrigem={$this->nmTabela}&dsMensagem=" . urlencode($error_message));
       exit;
     }
   }

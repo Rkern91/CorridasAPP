@@ -1,5 +1,11 @@
 <?php
   require_once("../Controllers/LoginController.php");
+  
+  $dsCampoHidden = "";
+  
+  //Define a operacao executada ao chamar a tela e cria um alerta
+  if (isset($_REQUEST["id_operacao"]))
+    $dsCampoHidden .= "<input type=\"hidden\" id=\"ds_operacao\" value=\"{$_REQUEST["id_operacao"]}\">";
 ?>
 <!DOCTYPE HTML>
 <html lang="pt-BR">
@@ -9,10 +15,12 @@
     <title>Corridas APP | Login</title>
   </head>
   <body>
-  <div class="container">
+    <div class="container">
       <h3>CorridasAPP</h3>
-      <form method="post">
-        <input type="hidden" name="tabela" id="id_tabela" value="login">
+      <?php echo $dsCampoHidden; ?>
+      <form method="post" name="form" id="form">
+        <input type="hidden" name="tabela"   id="id_tabela" value="login">
+        <input type="hidden" name="tela"     id="id_tela"   value="login">
         <table>
           <tr>
             <th>Email</th>
@@ -26,11 +34,13 @@
             <td colspan="2" style="text-align: center"><input type="submit" name=btn_submit id="btn_submit" value="Entrar"></td>
           </tr>
         </table>
-       <p><a href="registro.php" class="text-center"><strong>Cadastre-se</strong> agora mesmo!</a></p>
+       <p><a href="man_cadastro_usuario.php" class="text-center"><strong>Cadastre-se</strong> agora mesmo!</a></p>
       </form>
     </div>
   </body>
 <?php
+  include("footer.html");
+  
   try
   {
     if (isset($_POST["ds_email"]))

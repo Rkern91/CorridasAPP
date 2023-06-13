@@ -37,7 +37,7 @@
                          VALUES ('{$this->arrRequest["nm_cidade"]}', '{$this->arrRequest["cd_uf"]}')
                       RETURNING cd_cidade";
       
-      if (!$this->ConexaoBanco->runQueryes($sqlCidade, "insert"))
+      if (!$this->ConexaoBanco->runQueryes($sqlCidade, $this->arrRequest["f_action"]))
         throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
     }
     
@@ -55,7 +55,7 @@
                      WHERE cd_cidade = '{$this->arrRequest["cd_cidade"]}'
                  RETURNING cd_cidade";
       
-      if (!$this->ConexaoBanco->runQueryes($sqlCidade, "update"))
+      if (!$this->ConexaoBanco->runQueryes($sqlCidade, $this->arrRequest["f_action"]))
         throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
     }
     
@@ -68,7 +68,7 @@
     {
       //Se não existem pendencias, entra e remove a cidade
       if (!$this->validarExistenciaPendenciasCidade())
-        if (!$this->ConexaoBanco->runQueryes("DELETE FROM cidade WHERE cd_cidade = '{$this->arrRequest["cd_cidade"]}'", "delete"))
+        if (!$this->ConexaoBanco->runQueryes("DELETE FROM cidade WHERE cd_cidade = '{$this->arrRequest["cd_cidade"]}'", $this->arrRequest["f_action"]))
           throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
     }
     
@@ -91,16 +91,17 @@
           $dsLinkEditar = "<a href=\"man_cidade.php?cd_cidade={$cidade["cd_cidade"]}\">Editar</a>";
           
           $dsTRows .=<<<HTML
-        <tr>
-          <td style="text-align: center">{$cidade["cd_cidade"]}</td>
-          <td>{$cidade["nm_cidade"]}</td>
-          <td style="text-align: center">{$dsLinkEditar}</td>
-        </tr>
+            <tr>
+              <td style="text-align: center">{$cidade["cd_cidade"]}</td>
+              <td>{$cidade["nm_cidade"]}</td>
+              <td style="text-align: center">{$dsLinkEditar}</td>
+            </tr>
 HTML;
           
           $dsTableCidades =
             "<div class=\"container\">
               <h3>Listagem de Cidades</h3>
+              <input type=\"hidden\" name=\"tela\"   id=\"id_tela\"   value=\"listagem\">
               <table>
                 <tr>
                   <th>Cód.</th>
@@ -109,15 +110,23 @@ HTML;
                 </tr>
                 {$dsTRows}
               </table>
-              <p><a href=\"man_cidade.php\">Adicionar Cidade</a> | <a href=\"../index.php\">Voltar ao Início</a></p>
+              <p><a href=\"man_cidade.php\">Adicionar Cidade</a> | <a href=\"index.php\">Voltar ao Início</a></p>
             </div>";
         }
       }
       else
       {
-        //Define a operacao executada ao chamar a tela e cria um alerta
-        $dsTableCidades = "<input type=\"hidden\" id=\"ds_operacao\" value=\"{$_REQUEST["id_operacao"]}\">" .
-          "<input type=\"hidden\" id=\"ds_origem\"   value=\"cidade\">";
+        return <<<HTML
+          <input type=hidden id=ds_operacao value=cadastrar>
+          <input type=hidden id=ds_origem   value=evento>";
+HTML;
+      }
+      
+      //Define a operacao executada ao chamar a tela e cria um alerta
+      if (isset($_REQUEST["id_operacao"]))
+      {
+        $dsTableCidades .= "<input type=\"hidden\" id=\"ds_operacao\" value=\"{$_REQUEST["id_operacao"]}\">" .
+                           "<input type=\"hidden\" id=\"ds_origem\"   value=\"cidade\">";
       }
       
       return $dsTableCidades;
@@ -150,6 +159,7 @@ HTML;
         <form action="../Controllers/ProcessActionFormController.php" id="form" method="post">
           {$dsCampoHidden}
           <input type="hidden" name="tabela" id="id_tabela" value="cidade">
+          <input type="hidden" name="tela"   id="id_tela"   value="manutencao">
           <table>
             <tr>
               <th>Cidade</th>
@@ -178,7 +188,6 @@ HTML;
     /**
      * Obtem e retorna os dados de Cidades.
      *
-     * @param int|null $cdCidade
      * @return array|false|mixed
      * @throws Exception
      */
@@ -235,7 +244,7 @@ SQL;
       
       $arrOptionsEstados = [];
       
-      // Loop para concatenar as opções de estados em uma variável e
+      // Loop para concatenar as opções em uma variável e
       // setar o estado selecionado no array caso esteja ocorrendo uma edição
       foreach ($this->ConexaoBanco->getLastQueryResults() as $uf)
       {
@@ -260,18 +269,26 @@ SQL;
      */
     protected function validarExistenciaPendenciasCidade() : bool
     {
-      $sqlPendenciasCidade =<<<SQL
+      $arrPendencias = [
+        "pessoa",
+        "evento"
+      ];
+      
+      foreach ($arrPendencias as $dsTablePendencia)
+      {
+        $sqlPendenciasCidade =<<<SQL
         SELECT COUNT(*) AS qt_eventos
-          FROM evento e
-         WHERE e.cd_cidade = '{$this->arrRequest["cd_cidade"]}'
+          FROM {$dsTablePendencia} tp
+         WHERE tp.cd_cidade = '{$this->arrRequest["cd_cidade"]}'
 SQL;
-      
-      if (!$this->ConexaoBanco->runQueryes($sqlPendenciasCidade))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
-        
-      if ($this->ConexaoBanco->getLastQueryResults()[0]["qt_eventos"])
-        throw new Exception("A cidade selecionada está ligada a um ou mais eventos!");
-      
+
+        if (!$this->ConexaoBanco->runQueryes($sqlPendenciasCidade))
+          throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
+
+        if ($this->ConexaoBanco->getLastQueryResults()[0]["qt_eventos"] > 0)
+          throw new Exception("A cidade selecionada está ligada a um(a) ou mais {$dsTablePendencia}(s)!");
+      }
+
       return false;
     }
   }

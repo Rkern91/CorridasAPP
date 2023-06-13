@@ -29,7 +29,7 @@
   $form = <<<HTML
     <form action="../../processActionForm.php" id="form" method="post">
       {$dsCampoHidden}
-      <input type="hidden" name="tabela" id="id_tabela" value="modalidade">
+      <input type="hidden" name="tabela" id="id_tela" value="modalidade">
       <table>
         <tr>
           <th>Modalidade</th>

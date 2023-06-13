@@ -90,22 +90,22 @@
      * @param string $dsOp
      * @return bool
      */
-    public function runQueryes($sqlDados, string $dsOp = "select"): bool
+    public function runQueryes($sqlDados, string $dsOp = "selecionar"): bool
     {
       $dsRetorno = pg_query($this->objConn, $sqlDados);
       
       //Se ocorreu erro ao executar o SQL, seta o atributo com a descrição do erro.
       if (!$dsRetorno)
       {
-        $this->setLastQueryError(pg_last_error($dsRetorno));
+        $this->setLastQueryError(pg_last_error($this->objConn));
         return false;
       }
       else
       {
-        if ($dsOp == "select")
+        if ($dsOp == "selecionar")
           $this->setLastQueryResults(pg_fetch_all($dsRetorno));
         
-        if ($dsOp == "insert" || $dsRetorno == "update")
+        if ($dsOp == "inserir" || $dsOp == "atualizar")
           $this->setLastQueryId(pg_fetch_row($dsRetorno)[0]);
       }
 
@@ -163,6 +163,9 @@
      */
     protected function setLastQueryResults($lastQueryResults): void
     {
-      $this->lastQueryResults = $lastQueryResults;
+      if (isset($lastQueryResults) && $lastQueryResults > 0)
+        $this->lastQueryResults = $lastQueryResults;
+      else
+        $this->lastQueryResults = [];
     }
   }

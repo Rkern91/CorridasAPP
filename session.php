@@ -1,6 +1,6 @@
 <?php
   session_start();
   
-  if (!isset($_SESSION["ds_email_usuario"])) {
+  if (!isset($_SESSION["cd_pessoa"])) {
     header("location: ../View/login.php");
   }

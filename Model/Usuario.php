@@ -9,8 +9,8 @@
      * @var ConexaoBanco
      */
     private ConexaoBanco $ConexaoBanco;
-    
-    private string $nm_pessoa;
+
+    private int $cd_pessoa;
     private string $ds_email;
     private string $ds_senha;
     private int $cd_id_tipo;
@@ -21,22 +21,6 @@
       $this->setDsSenha($ds_senha);
       
       $this->ConexaoBanco = new ConexaoBanco();
-    }
-    
-    /**
-     * @return string
-     */
-    public function getNmPessoa(): string
-    {
-      return $this->nm_pessoa;
-    }
-    
-    /**
-     * @param string $nm_pessoa
-     */
-    private function setNmPessoa(string $nm_pessoa): void
-    {
-      $this->nm_pessoa = $nm_pessoa;
     }
     
     /**
@@ -88,6 +72,22 @@
     }
     
     /**
+     * @return int
+     */
+    public function getCdPessoa(): int
+    {
+      return $this->cd_pessoa;
+    }
+    
+    /**
+     * @param int $cd_pessoa
+     */
+    public function setCdPessoa(int $cd_pessoa): void
+    {
+      $this->cd_pessoa = $cd_pessoa;
+    }
+    
+    /**
      * Realiza login com os dados submetidos no formulário
      * @return bool
      * @throws Exception
@@ -95,17 +95,21 @@
     public function realizarLogin(): bool
     {
       $sqlLoginUsuario =<<<SQL
-        SELECT ds_email, cd_id_tipo FROM pessoa WHERE ds_email = '{$this->getDsEmail()}'
+        SELECT cd_pessoa, ds_email, cd_id_tipo
+          FROM pessoa
+         WHERE ds_email = '{$this->getDsEmail()}'
+           AND ds_senha = '{$this->getDsSenha()}'
 SQL;
       
       if (!$this->ConexaoBanco->runQueryes($sqlLoginUsuario))
         throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
       
-      $arrLoginUsuario = $this->ConexaoBanco->getLastQueryResults()[0];
+      $arrLoginUsuario = current($this->ConexaoBanco->getLastQueryResults());
 
-      if (hasValue($arrLoginUsuario["ds_email"]))
+      if (isset($arrLoginUsuario["cd_pessoa"]))
       {
         $this->setCdIdTipo($arrLoginUsuario["cd_id_tipo"]);
+        $this->setCdPessoa($arrLoginUsuario["cd_pessoa"]);
         return true;
       }
       
