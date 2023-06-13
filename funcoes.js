@@ -1,14 +1,6 @@
 /////////////////////////////////////////
 // FUNCOES EXECUTADAS NA TELA DE LOGIN //
 /////////////////////////////////////////
-
-function verificarAcaoFormLogin()
-{
-// case 'login':
-//   alert('Login realizado com sucesso!');
-//   break;
-}
-
 function validarCamposLogin()
 {
   var idTabela    = document.getElementById('id_tabela').value;
@@ -400,12 +392,10 @@ document.addEventListener('DOMContentLoaded', function(){
   //Se existe o elemento abaixo esta em uma tela com formulario e precisa validar alguns campos
   if (document.getElementById('form') ?? false)
   {
-    console.log('Tem o form');
     document.getElementById('form').addEventListener('submit', function(ev){
       const idTela = document.getElementById('id_tela').value;
       ev.preventDefault();
       
-      console.log(idTela);
       switch (idTela)
       {
         case 'login':
