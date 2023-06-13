@@ -360,6 +360,9 @@ function verificarAcaoForm()
       case 'cadastro':
         alert('Cadastro efetuado com sucesso, faça login!');
       break;
+      case 'login':
+        alert('Logado efetuado com SUCESSO!');
+      break;
       case 'cadastrar':
         switch (dsOrigem.value)
         {

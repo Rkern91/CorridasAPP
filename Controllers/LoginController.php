@@ -35,14 +35,8 @@
       {
         $_SESSION["id_tipo_usuario"]  = $this->Usuario->getCdIdTipo();
         $_SESSION["cd_pessoa"]        = $this->Usuario->getCdPessoa();
-        
-        echo "<script>
-                alert('Login realizado com sucesso!');
-                
-              </script>";
-        
-        $dsMsgSucess = "Login relizado com sucesso!";
-        header("Location: index.php?dsOrigem=login&dsMensagem=" . urlencode($dsMsgSucess));
+
+        header("Location: index.php?id_operacao=login");
       }
     }
   }
