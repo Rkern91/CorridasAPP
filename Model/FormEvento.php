@@ -124,7 +124,6 @@ SQL;
      */
     public function montarFormListagemEvento(): string
     {
-      $dsTableEventos = "";
       $dsCampoHidden  = "";
       $Eventos        = $this->obtemDadosEventoListagem();
       $dsTRows        = "";

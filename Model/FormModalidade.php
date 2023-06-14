@@ -275,16 +275,16 @@ SQL;
     function validarExistenciaPendenciasModalidade() : bool
     {
       $sqlPendenciasModal =<<<SQL
-        SELECT COUNT(*) AS qt_inscricoes
-          FROM inscricao i
-         WHERE i.cd_modalidade = '{$this->arrRequest["cd_modalidade"]}'
+        SELECT COUNT(*) AS qt_evento
+          FROM modalidade_evento e
+         WHERE e.cd_modalidade = '{$this->arrRequest["cd_modalidade"]}'
 SQL;
       
       if (!$this->ConexaoBanco->runQueryes($sqlPendenciasModal))
         throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
       
-      if ($this->ConexaoBanco->getLastQueryResults()[0]["qt_inscricoes"] > 0)
-        throw new Exception("A modalidade selecionada está ligada a uma ou mais inscricoes!");
+      if ($this->ConexaoBanco->getLastQueryResults()[0]["qt_evento"] > 0)
+        throw new Exception("A modalidade selecionada está ligada a uma ou mais eventos!");
       
       return false;
     }
