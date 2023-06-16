@@ -1,13 +1,12 @@
 <?php
-  require_once("../Model/FormUsuario.php");
-  session_start();
+  require_once("../Model/FormInscricao.php");
   
-  class CadastroUsuarioController
+  class InscricaoController
   {
     /**
-     * @var FormUsuario $ControladorCadastroUsuario
+     * @var FormInscricao $ControladorInscricao
      */
-    public FormUsuario $ControladorCadastroUsuario;
+    public FormInscricao $ControladorInscricao;
     
     /**
      * Construtor de Classe
@@ -16,7 +15,7 @@
     {
       try
       {
-        $this->ControladorCadastroUsuario = new FormUsuario($_REQUEST);
+        $this->ControladorInscricao = new FormInscricao($_REQUEST);
       }
       catch (Exception $e)
       {

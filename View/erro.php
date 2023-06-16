@@ -1,6 +1,6 @@
 <?php
-  $dsMsg           = "";
-  $dsRetornoOrigem = "";
+  $dsMsg         = "";
+  $dsLinkRetorno = "";
 
   const ID_ERRO_CONEXAO_BANCO = 1;
   const ID_ERRO_CONFIG_BANCO  = 2;
@@ -30,23 +30,32 @@
     }
   }
   
+  $dsLinkInicio = "<a href='index.php'>Voltar ao Inicio</a>";
+  
   switch ($_REQUEST["dsOrigem"])
   {
     case "cidade":
-      $dsRetornoOrigem = "<a href=\"sel_cidade.php\">Voltar p/ Listagem de Cidades</a>";
+      $dsLinkRetorno = "<a href=\"sel_cidade.php\">Voltar p/ Listagem de Cidades</a> | " . $dsLinkInicio;
     break;
     case "evento":
-      $dsRetornoOrigem = "<a href=\"sel_evento.php\">Voltar p/ Listagem de Eventos</a>";
+      $dsLinkRetorno = "<a href=\"sel_evento.php\">Voltar p/ Listagem de Eventos</a> | " . $dsLinkInicio;
     break;
     case "modalidade":
-      $dsRetornoOrigem = "<a href=\"sel_modalidade.php\">Voltar p/ Listagem de Modalidades</a>";
+      $dsLinkRetorno = "<a href=\"sel_modalidade.php\">Voltar p/ Listagem de Modalidades</a> | " . $dsLinkInicio;
+    break;
+    case "cadastroUsuario":
+      $dsLinkRetorno = $dsLinkInicio;
+      
+      if (!isset($_SESSION["cd_pessoa"]))
+        $dsLinkRetorno = "<a href=\"man_cadastro_usuario.php\">Cadastre-se</a> | <a href=\"login.php\">Voltar ao Inicio</a>";
     break;
     case "login":
-      $dsRetornoOrigem = "<a href=\"index.php\">Voltar p/ Início</a>";
+    case "extratoUsuario":
+      $dsLinkRetorno = $dsLinkInicio;
     break;
   }
   
-  $dsRetornoOrigem = "<p>" . $dsRetornoOrigem . " | " . "<a href='index.php'>Voltar ao Inicio</a></p>";
+  $dsLinkRetorno = "<p>" . $dsLinkRetorno . "</p>";
   
   if (isset($_REQUEST["dsMensagem"]))
     $dsMsg = urldecode($_REQUEST["dsMensagem"]);
@@ -59,7 +68,7 @@
                      <td><b>{$dsMsg}</b></td>
                    </tr>
                  </table>
-                 {$dsRetornoOrigem}
+                 {$dsLinkRetorno}
                </div>";
 ?>
 

@@ -113,3 +113,109 @@
     
     return $number;
   }
+  
+  function padronizaFone($number, $format_from = "pt_BR", $format_to = "sys", $add_click_to_call = false): string
+  {
+    $number = trim($number);
+    
+    if (strpos($number, "*") !== false)
+      return $number;
+    
+    $array       = array("&#34" => "");
+    $format_from = strtr($format_from, $array);
+    $format_to   = strtr($format_to, $array);
+    
+    unset($array);
+    
+    switch ($format_from)
+    {
+      case "sys":
+        break;
+      
+      case"pt_BR":
+      default:
+        $number = strtr($number, array(" " => ""));
+        $number = strtr($number, array("(" => ""));
+        $number = strtr($number, array(")" => ""));
+        $number = strtr($number, array("-" => ""));
+        break;
+    }
+    
+    switch ($format_to)
+    {
+      case "sys":
+        break;
+      
+      case "pt_BR":
+        
+        for($i=0; $i<strlen($number); $i++)
+          $array[] = substr($number, $i, 1);
+        
+        $number = "";
+        
+        //0800
+        if ($array[0] == 0)
+        {
+          for($i=0; $i<sizeof($array); $i++)
+          {
+            if ($i == 4)
+            {
+              $array_tmp[] = "-";
+              $array_tmp[] = $array[$i];
+            }
+            else
+              $array_tmp[] = $array[$i];
+          }
+        }
+        else
+        {
+          switch (sizeof($array))
+          {
+            case 10:
+              $separator = 6;
+              break;
+            
+            case 11:
+            default:
+              $separator = 7;
+              break;
+          }
+          
+          for($i=0; $i<sizeof($array); $i++)
+          {
+            switch ($i)
+            {
+              case 0:
+                $array_tmp[] = "(";
+                $array_tmp[] = $array[$i];
+                break;
+              
+              case 2:
+                $array_tmp[] = ")";
+                $array_tmp[] = $array[$i];
+                break;
+              
+              case $separator:
+                $array_tmp[] = "-";
+                $array_tmp[] = $array[$i];
+                break;
+              
+              default:
+                $array_tmp[] = $array[$i];
+                break;
+            }
+          }
+        }
+        
+        for($i=0; $i<sizeof($array_tmp); $i++)
+          $number .= $array_tmp[$i];
+        
+        break;
+    }
+    
+    //Formata o número de telefone com um link para clicar e chamar
+    if ($add_click_to_call)
+      $number = "<a href='tel:$number'>$number</a>";
+    
+    return $number;
+  }

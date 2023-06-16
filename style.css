@@ -4,9 +4,8 @@
 
 /* ESTILIZACAO DE CAMPOS */
 label {
-  font-size     : 15px;
   margin-right  : 10px;
-  margin-left   : 1px;
+  margin-left   : 3px;
   margin-bottom : 3px;
 }
 
@@ -22,7 +21,7 @@ select, input {
 /* ESTILIZACAO DE TABELAS E SUA ESTRUTURA */
 table {
   border-collapse : collapse;
-  margin          : auto auto 20px;
+  margin          : auto auto 15px;
 }
 
 table.erro th {
@@ -45,20 +44,21 @@ table.erro td {
 th, td {
   border      : 1px solid #000077;
   font-family : Arial, Helvetica, Tahoma, Geneva, sans-serif;
+  font-weight: normal;
 }
 
 th {
   color            : #ffffff;
-  font-size        : 15px;
-  padding          : 12px;
+  font-size        : 12px;
+  padding          : 2px 10px;
   background-color : #000077;
 }
 
 td {
   text-align: left;
   color     : #000077;
-  font-size : 12px;
-  padding   : 9px;
+  font-size : 10px;
+  padding   : 2px 10px;
 }
 
 /* ESTILIZACAO DE HEADERS-TITULOS*/
@@ -81,21 +81,21 @@ h5 { font-size : 13px; }
 /* ESTILIZACAO DE LINKS */
 A:link {
   font-family     : Arial, Helvetica, Tahoma, Geneva, sans-serif;
-  font-size       : 12pt;
+  font-size       : 10pt;
   text-decoration : none;
   color           : #0000FF
 }
 
 A:visited {
   font-family     : Arial, Helvetica, Tahoma, Geneva, sans-serif;
-  font-size       : 12pt;
+  font-size       : 10pt;
   text-decoration : none;
   color           : #0000FF
 }
 
 A:hover {
   font-family     : Arial, Helvetica, Tahoma, Geneva, sans-serif;
-  font-size       : 12pt;
+  font-size       : 10pt;
   text-decoration : underline;
   color           : #FF0000
 }

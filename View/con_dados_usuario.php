@@ -11,24 +11,22 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-<div class="container">
-  <h3>Cadastro de Usuário</h3>
+
   <?php
     try
     {
       $CadastroUsuarioController     = new CadastroUsuarioController();
-      $formManutencaoCadastroUsuario = $CadastroUsuarioController->ControladorCadastroUsuario->montarFormManutencaoCadastroUsuario();
+      $formManutencaoCadastroUsuario = $CadastroUsuarioController->ControladorCadastroUsuario->montarExtratoDadosUsuario();
       
       echo $formManutencaoCadastroUsuario;
     }
     catch (Exception $e)
     {
       $error_message = "Erro ao obter dados do formulário! DETALHES: " . $e->getMessage();
-      header("Location: erro.php?dsOrigem=cadastroUsuario&dsMensagem=" . urlencode($error_message));
+      header("Location: erro.php?dsOrigem=extratoUsuario&dsMensagem=" . urlencode($error_message));
       exit;
     }
   ?>
-</div>
 </body>
 <?php include("footer.html");?>
 </html>

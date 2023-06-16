@@ -265,7 +265,7 @@ function validarCampos()
   if (document.querySelector('input[name="f_action"]:checked').value === 'deletar')
     return true;
 
-  var idTabela    = document.getElementById('id_tabela').value;
+  var idTabela  = document.getElementById('id_tabela').value;
   var dsMsg     = '';
   var arrFields = '';
 
@@ -293,6 +293,23 @@ function validarCampos()
       arrFields = {
         'nm_cidade' : 'Cidade',
         'cd_uf'     : 'Estado'
+      };
+    break;
+    case 'pessoa':
+      arrFields = {
+        'nm_pessoa'      : 'Nome',
+        'nr_telefone'    : 'Telefone',
+        'dt_nascimento'  : 'Dt. Nascimento',
+        'ds_sexo'        : 'Sexo',
+        'cd_cidade'      : 'Cidade',
+        'cd_id_tipo'     : 'Tipo Pessoa',
+        'ds_email'       : 'Email',
+        'ds_senha'       : 'Senha'
+      };
+    break;
+    case 'inscricao':
+      arrFields = {
+        'cd_modalidade' : 'Modalidade'
       };
     break;
   }
@@ -354,6 +371,9 @@ function verificarAcaoForm()
       break;
       case 'login':
         alert('Logado efetuado com SUCESSO!');
+      break;
+      case 'exclusaoCadastro':
+        alert('Cadastro REMOVIDO com sucesso!');
       break;
       case 'cadastrar':
         switch (dsOrigem.value)

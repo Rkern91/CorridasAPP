@@ -5,30 +5,36 @@
   class ProcessActionFormController
   {
     /**
-     * @var CidadeController $ActionFormCidade
+     * Array de classes instanciadas de forma dinâmica
+     * no método CallProcessAction
+     * @var array|string[]
      */
-    public CidadeController $ActionFormCidade;
-    
-    /**
-     * @var EventoController $ActionFormEvento
-     */
-    public EventoController $ActionFormEvento;
-    
-    /**
-     * @var ModalidadeController $ActionFormModalidade
-     */
-    public ModalidadeController $ActionFormModalidade;
-    
     protected array $opNmClass = [
-      "cidade"     => "FormCidade",
-      "evento"     => "FormEvento",
-      "modalidade" => "FormModalidade",
-      "pessoa"     => "FormUsuario"
+      "cidade"      => "FormCidade",
+      "evento"      => "FormEvento",
+      "modalidade"  => "FormModalidade",
+      "pessoa"      => "FormUsuario",
+      "inscricao"   => "FormInscricao"
     ];
     
+    /**
+     * Nome da tabela atual onde
+     * será realizado operações de banco
+     * @var string|mixed
+     */
     public string $nmTabela;
+    
+    /**
+     * Ação executada no formulário
+     * @var string|mixed
+     */
     public string $formAction;
-    public array $arrRequest;
+    
+    /**
+     * Dados enviados
+     * @var array
+     */
+    public array  $arrRequest;
     
     /**
      * Construtor da classe
@@ -58,8 +64,24 @@
         
         if ($this->nmTabela == "pessoa")
         {
-          header("Location: ../View/login.php?id_operacao=cadastro");
-          exit;
+          if ($this->formAction == "inserir")
+          {
+            header("Location: ../View/login.php?id_operacao=cadastro");
+            exit;
+          }
+          
+          if ($this->formAction == "atualizar")
+          {
+            header("Location: ../View/index.php?id_operacao=atualizar");
+            exit;
+          }
+          
+          if ($this->formAction == "deletar")
+          {
+            session_destroy();
+            header("Location: ../View/login.php?id_operacao=exclusaoCadastro");
+            exit;
+          }
         }
         
         header("Location: ../View/sel_{$this->nmTabela}.php?id_operacao={$this->formAction}");

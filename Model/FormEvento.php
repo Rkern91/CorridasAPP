@@ -125,6 +125,7 @@ SQL;
     public function montarFormListagemEvento(): string
     {
       $dsCampoHidden  = "";
+      $dsLinksRetorno = "";
       $Eventos        = $this->obtemDadosEventoListagem();
       $dsTRows        = "";
       
@@ -132,7 +133,15 @@ SQL;
       {
         foreach ($Eventos as $evento)
         {
-          $dsLinkEditar    = "<a href=\"man_evento.php?cd_evento={$evento["cd_evento"]}\">Editar</a>";
+          $dsLinkEditar   = "<a href=\"man_evento.php?cd_evento={$evento["cd_evento"]}\">Editar</a>";
+          $dsLinksRetorno = "<p><a href=\"man_evento.php\">Adicionar Evento</a> | <a href=\"index.php\">Voltar ao Início</a></p>";
+          
+          if (isset($_SESSION["id_tipo_usuario"]) && $_SESSION["id_tipo_usuario"] == 2)
+          {
+            $dsLinkEditar   = "<a href=\"man_inscricao.php?cd_evento={$evento["cd_evento"]}&cd_pessoa={$_SESSION["cd_pessoa"]}\">Inscrever-se!</a>";
+            $dsLinksRetorno =  "<p><a href=\"index.php\">Voltar ao Início</a></p>";
+          }
+          
           $dsTipModalidade = "";
           
           //Se existir modalidade atrelada ao evento, cria uma especie de tip ao sobrepor o mouse na coluna
@@ -187,7 +196,7 @@ HTML;
             </tr>
             {$dsTRows}
           </table>
-          <p><a href=man_evento.php>Adicionar Evento</a> | <a href=index.php>Voltar ao Início</a></p>
+          {$dsLinksRetorno}
         </div>
 HTML;
     }
@@ -372,15 +381,25 @@ SQL;
      * Obtem e retorna uma lista de modalidades em forma de array
      * para popular o campo SELECT da tela.
      *
+     * @param string $idTela
      * @return string
      * @throws Exception
      */
-    protected function obterOpModalidadesEvento(): string
+    protected function obterOpModalidadesEvento(string $idTela = "manutencao"): string
     {
+      $sqlJoinWhere = "";
+      
+      if ($idTela == "extrato")
+      {
+        $sqlJoinWhere = "JOIN modalidade_evento me ON me.cd_modalidade = m.cd_modalidade
+                         WHERE me.cd_evento = '{$this->arrRequest["cd_evento"]}'";
+      }
+      
       $sqlModalidades = <<<SQL
         SELECT m.cd_modalidade                              AS value,
                m.vl_km_distancia || ' / ' || m.ds_descricao AS description
           FROM modalidade m
+          {$sqlJoinWhere}
          ORDER BY m.vl_km_distancia
 SQL;
       

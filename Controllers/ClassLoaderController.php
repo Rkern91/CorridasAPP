@@ -4,3 +4,4 @@
   require_once("../Model/FormEvento.php");
   require_once("../Model/FormModalidade.php");
   require_once("../Model/FormUsuario.php");
+  require_once("../Model/FormInscricao.php");
