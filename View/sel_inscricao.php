@@ -7,7 +7,6 @@
 <?php require_once("head.php"); ?>
 <body>
 <div class="container">
-  <h3>Inscrição</h3>
   <?php
     try
     {
@@ -23,7 +22,7 @@
       exit;
     }
   ?>
-  <p><a href="sel_evento.php">Listagem de Eventos</a> | <a href="index.php">Voltar ao Início</a></p>
+  
 </div>
 </body>
 <?php include("footer.html");?>

@@ -23,6 +23,9 @@
     {
       $this->ConexaoBanco = new ConexaoBanco();
       $this->arrRequest   = $arrRequest;
+      
+      if (!isset($this->arrRequest["cd_pessoa"]) && isset($_SESSION["cd_pessoa"]))
+        $this->arrRequest["cd_pessoa"] = $_SESSION["cd_pessoa"];
     }
     
     /**
@@ -160,18 +163,105 @@ SQL;
 HTML;
     }
     
-    public function montarFormListagemCadastro()
+    /**
+     * @throws Exception
+     */
+    public function montarFormListagemCadastro(): string
     {
+      $dsCampoHidden  = "";
+      $dsLinksRetorno = "";
+      $Inscricao      = $this->obterDadosEventoInscricao();
+      $dsTRows        = "";
+      
+      if (!empty($Inscricao))
+      {
+        foreach ($Inscricao as $evento)
+        {
+          $dsModalidade   = $this->obterDescricaoModalidade($evento["cd_modalidade"]);
+          $dsLinkEditar   = "<a href=\"man_inscricao.php?cd_evento={$evento["cd_evento"]}&cd_pessoa={$_SESSION["cd_pessoa"]}\">Alterar Inscrição</a>";
+          
+          $dsTRows .=<<<HTML
+            <tr>
+              <td>{$evento["nm_evento"]}</td>
+              <td>{$evento["dt_evento"]}</td>
+              <td>{$evento["nm_cidade"]}</td>
+              <td>{$evento["ds_equipe"]}</td>
+              <td>{$evento["ds_contato"]}</td>
+              <td>{$dsModalidade["ds_descricao"]}</td>
+              <td style="text-align: center">{$dsLinkEditar}</td>
+            </tr>
+HTML;
+        }
+      }
+      else
+      {
+        return <<<HTML
+          <input type=hidden id=ds_operacao value=cadastrar>
+          <input type=hidden id=ds_origem   value=inscricao>";
+HTML;
+      }
+      
+      //Define a operacao executada ao chamar a tela e cria um alerta
+      if (isset($_REQUEST["id_operacao"]))
+        $dsCampoHidden = "<input type=\"hidden\" id=\"ds_operacao\" value=\"{$_REQUEST["id_operacao"]}\">" .
+                         "<input type=\"hidden\" id=\"ds_origem\"   value=\"inscricao\">";
+      
+      return <<<HTML
+        <div class=container>
+          <h3>Listagem de Inscrições</h3>
+          {$dsCampoHidden}
+          <table>
+            <tr>
+              <th>Evento</th>
+              <th>Data</th>
+              <th>Cidade</th>
+              <th>Equipe</th>
+              <th>Contato</th>
+              <th>Distância (KM)</th>
+              <th>-</th>
+            </tr>
+            {$dsTRows}
+          </table>
+          <p><a href="sel_evento.php">Listagem de Eventos</a> | <a href="index.php">Voltar ao Início</a></p>
+        </div>
+HTML;
+    }
     
+    /**
+     * Retorna a descrição de uma modalidade
+     * @param int $cdModalidade
+     * @return mixed
+     * @throws Exception
+     */
+    protected function obterDescricaoModalidade(int $cdModalidade)
+    {
+      $sqlInscricao =<<<SQL
+        SELECT m.ds_descricao
+          FROM modalidade m
+         WHERE m.cd_modalidade = '{$cdModalidade}';
+SQL;
+      
+      if (!$this->ConexaoBanco->runQueryes($sqlInscricao))
+        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
+      
+      return $this->ConexaoBanco->getLastQueryResults()[0];
     }
     
     /**
      * Obtem dados do evento para realização
-     * da inscrição do usuario no evento.
+     * da inscrição do usuario no evento e para a tela de listagem.
      * @throws Exception
      */
     protected function obterDadosEventoInscricao()
     {
+      $sqlWhere = " AND i.cd_pessoa = '{$this->arrRequest["cd_pessoa"]}' ";
+      
+      if (isset($this->arrRequest["cd_evento"]) && isset($this->arrRequest["cd_pessoa"]))
+      {
+        $sqlWhere = " AND e.cd_evento = '{$this->arrRequest["cd_evento"]}'
+                      AND i.cd_pessoa = '{$this->arrRequest["cd_pessoa"]}'";
+      }
+      
       $sqlInscricao =<<<SQL
         SELECT e.cd_evento,
                e.nm_evento,
@@ -183,16 +273,21 @@ HTML;
                TO_CHAR(e.dt_evento, 'HH:MI DD/MM/YYYY') AS dt_evento
           FROM evento         e
           LEFT JOIN inscricao i ON i.cd_evento = e.cd_evento
-                               AND i.cd_pessoa = '{$this->arrRequest["cd_pessoa"]}'
           JOIN cidade         c ON c.cd_cidade = e.cd_cidade
           JOIN uf             u ON     u.cd_uf = c.cd_uf
-         WHERE e.cd_evento = '{$this->arrRequest["cd_evento"]}'
+         WHERE TRUE
+          {$sqlWhere}
 SQL;
       
       if (!$this->ConexaoBanco->runQueryes($sqlInscricao))
         throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
       
-      return $this->ConexaoBanco->getLastQueryResults()[0];
+      $arrDadosInscricoesEventos = $this->ConexaoBanco->getLastQueryResults();
+      
+      if (isset($this->arrRequest["cd_evento"]))
+        $arrDadosInscricoesEventos = $arrDadosInscricoesEventos[0];
+      
+      return $arrDadosInscricoesEventos;
     }
     
     /**
@@ -205,7 +300,6 @@ SQL;
      */
     protected function obterOpModalidadesEvento($cdModalidade = null): string
     {
-      
       $sqlModalidades = <<<SQL
         SELECT m.cd_modalidade                              AS value,
                m.vl_km_distancia || ' / ' || m.ds_descricao AS description
