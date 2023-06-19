@@ -57,14 +57,10 @@
      */
     public function deletarAcao()
     {
-      //Se não existem dependencias, remove o registro
-      if (!$this->validarExistenciaPendenciasModalidade())
-      {
-        $sql = "DELETE FROM modalidade WHERE cd_modalidade = '{$this->arrRequest["cd_modalidade"]}'";
-        
-        if (!$this->ConexaoBanco->runQueryes($sql, $this->arrRequest["f_action"]))
-          throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
-      }
+      $sql = "DELETE FROM inscricao WHERE cd_modalidade = '{$this->arrRequest["cd_inscricao"]}'";
+      
+      if (!$this->ConexaoBanco->runQueryes($sql, $this->arrRequest["f_action"]))
+        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
     }
     
     /**

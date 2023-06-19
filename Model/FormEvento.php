@@ -425,11 +425,20 @@ SQL;
     protected function removerDependenciasEvento()
     {
       //TODO: Ao remover evento deve considerar inscrições já realizadas nas modalidades do evento
-//      if ($this->arrRequest["f_action"] == "deletar")
+      $arrPendencias = [
+        "inscricao",
+        "modalidade_evento"
+      ];
       
-      $sql = "DELETE FROM modalidade_evento WHERE cd_evento = '{$this->arrRequest["cd_evento"]}'";
-      
-      if (!$this->ConexaoBanco->runQueryes($sql, "deletar"))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
+      foreach ($arrPendencias as $dsTablePendencia)
+      {
+        $sqlPendenciasCidade =<<<SQL
+        DELETE FROM {$dsTablePendencia}
+         WHERE cd_evento = '{$this->arrRequest["cd_evento"]}'
+SQL;
+        
+        if (!$this->ConexaoBanco->runQueryes($sqlPendenciasCidade, $this->arrRequest["f_action"]))
+          throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
+      }
     }
   }
