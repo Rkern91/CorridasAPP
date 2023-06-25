@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS uf(
 CREATE TABLE IF NOT EXISTS cidade(
   cd_cidade SERIAL      NOT NULL,
   nm_cidade VARCHAR(60) NOT NULL,
-  cd_uf     SMALLINT    NOT NULL;
+  cd_uf     SMALLINT    NOT NULL,
   CONSTRAINT pk_cd_cidade PRIMARY KEY (cd_cidade),
   CONSTRAINT fk_cd_uf 	  FOREIGN KEY (cd_uf) REFERENCES uf (cd_uf)
 );
