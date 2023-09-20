@@ -302,7 +302,6 @@ function validarCampos()
         'dt_nascimento'  : 'Dt. Nascimento',
         'ds_sexo'        : 'Sexo',
         'cd_cidade'      : 'Cidade',
-        'cd_id_tipo'     : 'Tipo Pessoa',
         'ds_email'       : 'Email',
         'ds_senha'       : 'Senha'
       };
@@ -370,7 +369,7 @@ function verificarAcaoForm()
         alert('Cadastro efetuado com sucesso, faça login!');
       break;
       case 'login':
-        alert('Logado efetuado com SUCESSO!');
+        alert('Login efetuado com SUCESSO!');
       break;
       case 'exclusaoCadastro':
         alert('Cadastro REMOVIDO com sucesso!');

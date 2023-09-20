@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS pessoa (
   ds_sexo       VARCHAR(1)  CHECK (ds_sexo IN ('F', 'M')),
   cd_cidade     INTEGER     NOT NULL,
   ds_fator_rh   VARCHAR(10),
-  cd_id_tipo	INTEGER	    NOT NULL,
+  cd_id_tipo	INTEGER DEFAULT 2,
   ds_email	VARCHAR(50) NOT NULL UNIQUE,
   ds_senha	VARCHAR(50) NOT NULL,
   CONSTRAINT pk_cd_pessoa     PRIMARY KEY (cd_pessoa),
