@@ -1,2 +1,4 @@
 # Ignorar a pasta de configuracao da IDE
 .idea/
+
+.env
