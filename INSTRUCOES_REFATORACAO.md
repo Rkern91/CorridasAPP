@@ -28,7 +28,7 @@ Existe uma classe `ConexaoBanco` que centraliza/intermedia as conexões ao banco
 
 Estas regras são inegociáveis nesta colaboração:
 
-1. **NÃO faça commits, push, merges, exclusão de arquivos ou de branches sem aprovação explícita do desenvolvedor.** Sempre que algo estiver pronto para ser commitado, **pare, descreva o que será commitado e peça verificação/teste** antes. O desenvolvedor testa, e só então autoriza.
+1. **NÃO faça commits, merges, exclusão de arquivos ou de branches sem aprovação explícita do desenvolvedor.** Sempre que algo estiver pronto para ser commitado, **pare, descreva o que será commitado e peça verificação/teste** antes. O desenvolvedor testa, e só então autoriza. **Quando um commit é aprovado, o `push` correspondente já fica autorizado junto** — não precisa pedir aprovação separada para o push (mas pode confirmar ambos quando achar mais seguro).
 2. **Trabalhe por fases.** Cada fase tem um escopo fechado. Só inicie a próxima fase após o desenvolvedor confirmar que a anterior foi validada.
 3. **Não quebre o que funciona.** Cada entidade (cidade, evento, modalidade, usuário) deve continuar funcionando após sua refatoração. Antes de declarar uma fase pronta, descreva como testá-la manualmente.
 4. **Pergunte quando houver ambiguidade.** Não invente regras de negócio. Se algo não estiver claro no código, pergunte antes de assumir.
