@@ -5,8 +5,8 @@
   class ProcessActionFormController
   {
     /**
-     * Array de classes instanciadas de forma dinâmica
-     * no método CallProcessAction
+     * Array de classes instanciadas de forma dinï¿½mica
+     * no mï¿½todo CallProcessAction
      * @var array|string[]
      */
     protected array $opNmClass = [
@@ -19,13 +19,13 @@
     
     /**
      * Nome da tabela atual onde
-     * será realizado operações de banco
+     * serï¿½ realizado operaï¿½ï¿½es de banco
      * @var string|mixed
      */
     public string $nmTabela;
     
     /**
-     * Ação executada no formulário
+     * Aï¿½ï¿½o executada no formulï¿½rio
      * @var string|mixed
      */
     public string $formAction;
@@ -49,8 +49,8 @@
     }
     
     /**
-     * Método responsável por processar a requisição do formulário
-     * para cada classe do Projeto de forma dinâmica.
+     * Mï¿½todo responsï¿½vel por processar a requisiï¿½ï¿½o do formulï¿½rio
+     * para cada classe do Projeto de forma dinï¿½mica.
      * @return void
      */
     public function callProcessAction()
@@ -96,13 +96,13 @@
     /**
      * Padroniza o retorno de erros
      * e redireciona para a tela de erros.
-     * @param $dsMensagem - Descricção do erro ocorrido na operação.
+     * @param $dsMensagem - Descricï¿½ï¿½o do erro ocorrido na operaï¿½ï¿½o.
      * @return void
      */
     protected function padronizarRetornoErro($dsMensagem)
     {
       $error_message = "Erro ao {$this->formAction} registro. {$dsMensagem}";
-      header("Location: ../View/erro.php?id_erro=" . ConexaoBanco::$opIdErrosBd[$this->formAction] . "&dsOrigem={$this->nmTabela}&dsMensagem=" . urlencode($error_message));
+      header("Location: ../View/erro.php?id_erro=" . Database::$opIdErrosBd[$this->formAction] . "&dsOrigem={$this->nmTabela}&dsMensagem=" . urlencode($error_message));
       exit;
     }
   }

@@ -1,14 +1,14 @@
 <?php
-  require_once("ConexaoBanco.php");
+  require_once("Database.php");
   require_once("../helpers.inc.php");
-  
+
   class Usuario
   {
     /**
-     * Classe de Conexao ao Banco de Dados
-     * @var ConexaoBanco
+     * Camada de acesso ao Banco de Dados
+     * @var Database
      */
-    private ConexaoBanco $ConexaoBanco;
+    private Database $Database;
 
     private int $cd_pessoa;
     private string $ds_email;
@@ -19,8 +19,8 @@
     {
       $this->setDsEmail($ds_email);
       $this->setDsSenha($ds_senha);
-      
-      $this->ConexaoBanco = new ConexaoBanco();
+
+      $this->Database = new Database();
     }
     
     /**
@@ -97,14 +97,12 @@
       $sqlLoginUsuario =<<<SQL
         SELECT cd_pessoa, ds_email, cd_id_tipo
           FROM pessoa
-         WHERE ds_email = '{$this->getDsEmail()}'
-           AND ds_senha = '{$this->getDsSenha()}'
+         WHERE ds_email = $1
+           AND ds_senha = $2
 SQL;
-      
-      if (!$this->ConexaoBanco->runQueryes($sqlLoginUsuario))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
-      
-      $arrLoginUsuario = current($this->ConexaoBanco->getLastQueryResults());
+
+      $arrResultado    = $this->Database->select($sqlLoginUsuario, [$this->getDsEmail(), $this->getDsSenha()]);
+      $arrLoginUsuario = $arrResultado ? current($arrResultado) : [];
 
       if (isset($arrLoginUsuario["cd_pessoa"]))
       {

@@ -1,14 +1,14 @@
 <?php
-  require_once("ConexaoBanco.php");
+  require_once("Database.php");
   require_once("../helpers.inc.php");
-  
+
   class FormCidade
   {
     /**
-     * Classe de Conexao ao Banco de Dados
-     * @var ConexaoBanco
+     * Camada de acesso ao Banco de Dados
+     * @var Database
      */
-    private ConexaoBanco $ConexaoBanco;
+    private Database $Database;
     
     /**
      * @var array
@@ -21,8 +21,8 @@
      */
     public function __construct($arrRequest)
     {
-      $this->ConexaoBanco = new ConexaoBanco();
-      $this->arrRequest   = $arrRequest;
+      $this->Database   = new Database();
+      $this->arrRequest = $arrRequest;
     }
     
     /**
@@ -34,11 +34,13 @@
     public function inserirAcao()
     {
       $sqlCidade = "INSERT INTO cidade (nm_cidade, cd_uf)
-                         VALUES ('{$this->arrRequest["nm_cidade"]}', '{$this->arrRequest["cd_uf"]}')
+                         VALUES ($1, $2)
                       RETURNING cd_cidade";
-      
-      if (!$this->ConexaoBanco->runQueryes($sqlCidade, $this->arrRequest["f_action"]))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
+
+      $this->Database->execute($sqlCidade, [
+        $this->arrRequest["nm_cidade"],
+        $this->arrRequest["cd_uf"]
+      ]);
     }
     
     /**
@@ -50,13 +52,16 @@
     public function atualizarAcao()
     {
       $sqlCidade = "UPDATE cidade
-                       SET nm_cidade = '{$this->arrRequest["nm_cidade"]}',
-                           cd_uf     = '{$this->arrRequest["cd_uf"]}'
-                     WHERE cd_cidade = '{$this->arrRequest["cd_cidade"]}'
+                       SET nm_cidade = $1,
+                           cd_uf     = $2
+                     WHERE cd_cidade = $3
                  RETURNING cd_cidade";
-      
-      if (!$this->ConexaoBanco->runQueryes($sqlCidade, $this->arrRequest["f_action"]))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
+
+      $this->Database->execute($sqlCidade, [
+        $this->arrRequest["nm_cidade"],
+        $this->arrRequest["cd_uf"],
+        $this->arrRequest["cd_cidade"]
+      ]);
     }
     
     /**
@@ -68,8 +73,7 @@
     {
       //Se não existem pendencias, entra e remove a cidade
       if (!$this->validarExistenciaPendenciasCidade())
-        if (!$this->ConexaoBanco->runQueryes("DELETE FROM cidade WHERE cd_cidade = '{$this->arrRequest["cd_cidade"]}'", $this->arrRequest["f_action"]))
-          throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
+        $this->Database->execute("DELETE FROM cidade WHERE cd_cidade = $1", [$this->arrRequest["cd_cidade"]]);
     }
     
     /**
@@ -193,15 +197,17 @@ HTML;
      */
     protected function obtemDadosCidade()
     {
-      $sqlWhere = "";
-      $sqlField = "c.nm_cidade || ' / ' || u.ds_sigla AS nm_cidade,";
-      
+      $sqlWhere  = "";
+      $sqlField  = "c.nm_cidade || ' / ' || u.ds_sigla AS nm_cidade,";
+      $arrParams = [];
+
       if (isset($this->arrRequest["cd_cidade"]))
       {
-        $sqlWhere = "AND c.cd_cidade = '{$this->arrRequest["cd_cidade"]}'";
-        $sqlField = "c.nm_cidade,";
+        $sqlWhere    = "AND c.cd_cidade = $1";
+        $sqlField    = "c.nm_cidade,";
+        $arrParams[] = $this->arrRequest["cd_cidade"];
       }
-      
+
       $sqlCidades =<<<SQL
         SELECT c.cd_cidade,
                {$sqlField}
@@ -212,15 +218,12 @@ HTML;
           {$sqlWhere}
          ORDER BY c.nm_cidade
 SQL;
-      
-      if (!$this->ConexaoBanco->runQueryes($sqlCidades))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
-      
-      $arrDadosCidades = $this->ConexaoBanco->getLastQueryResults();
-      
-      if (isset($this->arrRequest["cd_cidade"]) && $arrDadosCidades > 0)
+
+      $arrDadosCidades = $this->Database->select($sqlCidades, $arrParams);
+
+      if (isset($this->arrRequest["cd_cidade"]) && !empty($arrDadosCidades))
         $arrDadosCidades = $arrDadosCidades[0];
-      
+
       return $arrDadosCidades;
     }
     
@@ -239,14 +242,13 @@ SQL;
          ORDER BY u.ds_uf
 SQL;
       
-      if (!$this->ConexaoBanco->runQueryes($sqlUf))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
-      
+      $arrEstados = $this->Database->select($sqlUf);
+
       $arrOptionsEstados = [];
-      
+
       // Loop para concatenar as opções em uma variável e
       // setar o estado selecionado no array caso esteja ocorrendo uma edição
-      foreach ($this->ConexaoBanco->getLastQueryResults() as $uf)
+      foreach ($arrEstados as $uf)
       {
         $idSelected = "";
         
@@ -279,13 +281,12 @@ SQL;
         $sqlPendenciasCidade =<<<SQL
         SELECT COUNT(*) AS qt_eventos
           FROM {$dsTablePendencia} tp
-         WHERE tp.cd_cidade = '{$this->arrRequest["cd_cidade"]}'
+         WHERE tp.cd_cidade = $1
 SQL;
 
-        if (!$this->ConexaoBanco->runQueryes($sqlPendenciasCidade))
-          throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
+        $arrPendenciasCidade = $this->Database->select($sqlPendenciasCidade, [$this->arrRequest["cd_cidade"]]);
 
-        if ($this->ConexaoBanco->getLastQueryResults()[0]["qt_eventos"] > 0)
+        if ($arrPendenciasCidade[0]["qt_eventos"] > 0)
           throw new Exception("A cidade selecionada está ligada a um(a) ou mais {$dsTablePendencia}(s)!");
       }
 

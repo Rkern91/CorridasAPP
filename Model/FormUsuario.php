@@ -1,14 +1,14 @@
 <?php
-  require_once("ConexaoBanco.php");
+  require_once("Database.php");
   require_once("../helpers.inc.php");
-  
+
   class FormUsuario
   {
     /**
-     * Classe de Conexao ao Banco de Dados
-     * @var ConexaoBanco
+     * Camada de acesso ao Banco de Dados
+     * @var Database
      */
-    private ConexaoBanco $ConexaoBanco;
+    private Database $Database;
     
     /**
      * @var array
@@ -21,8 +21,8 @@
      */
     public function __construct($arrRequest)
     {
-      $this->ConexaoBanco = new ConexaoBanco();
-      $this->arrRequest   = $arrRequest;
+      $this->Database   = new Database();
+      $this->arrRequest = $arrRequest;
     }
     
     /**
@@ -33,14 +33,20 @@
      */
     public function inserirAcao()
     {
-      $sqlPessoa= "INSERT INTO pessoa (nm_pessoa, nr_telefone, dt_nascimento, ds_sexo,
+      $sqlPessoa = "INSERT INTO pessoa (nm_pessoa, nr_telefone, dt_nascimento, ds_sexo,
                                        cd_cidade, ds_email, ds_senha)
-                         VALUES ('{$this->arrRequest["nm_pessoa"]}', '{$this->arrRequest["nr_telefone"]}', '{$this->arrRequest["dt_nascimento"]}', '{$this->arrRequest["ds_sexo"]}',
-                                 '{$this->arrRequest["cd_cidade"]}', '{$this->arrRequest["ds_email"]}', '{$this->arrRequest["ds_senha"]}')
+                         VALUES ($1, $2, $3, $4, $5, $6, $7)
                       RETURNING cd_pessoa";
-      
-      if (!$this->ConexaoBanco->runQueryes($sqlPessoa, $this->arrRequest["f_action"]))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
+
+      $this->Database->execute($sqlPessoa, [
+        $this->arrRequest["nm_pessoa"],
+        $this->arrRequest["nr_telefone"],
+        $this->arrRequest["dt_nascimento"],
+        $this->arrRequest["ds_sexo"],
+        $this->arrRequest["cd_cidade"],
+        $this->arrRequest["ds_email"],
+        $this->arrRequest["ds_senha"]
+      ]);
     }
     
     /**
@@ -52,18 +58,26 @@
     public function atualizarAcao()
     {
       $sqlPessoa = "UPDATE pessoa
-                       SET nm_pessoa     = '{$this->arrRequest["nm_pessoa"]}',
-                           nr_telefone   = '{$this->arrRequest["nr_telefone"]}',
-                           dt_nascimento = '{$this->arrRequest["dt_nascimento"]}',
-                           ds_sexo       = '{$this->arrRequest["ds_sexo"]}',
-                           cd_cidade     = '{$this->arrRequest["cd_cidade"]}',
-                           ds_email      = '{$this->arrRequest["ds_email"]}',
-                           ds_senha      = '{$this->arrRequest["ds_senha"]}'
-                     WHERE cd_pessoa = '{$this->arrRequest["cd_pessoa"]}'
+                       SET nm_pessoa     = $1,
+                           nr_telefone   = $2,
+                           dt_nascimento = $3,
+                           ds_sexo       = $4,
+                           cd_cidade     = $5,
+                           ds_email      = $6,
+                           ds_senha      = $7
+                     WHERE cd_pessoa = $8
                  RETURNING cd_pessoa";
 
-      if (!$this->ConexaoBanco->runQueryes($sqlPessoa, $this->arrRequest["f_action"]))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
+      $this->Database->execute($sqlPessoa, [
+        $this->arrRequest["nm_pessoa"],
+        $this->arrRequest["nr_telefone"],
+        $this->arrRequest["dt_nascimento"],
+        $this->arrRequest["ds_sexo"],
+        $this->arrRequest["cd_cidade"],
+        $this->arrRequest["ds_email"],
+        $this->arrRequest["ds_senha"],
+        $this->arrRequest["cd_pessoa"]
+      ]);
     }
     
     /**
@@ -242,13 +256,10 @@ HTML;
         SELECT {$sqlFields}
           FROM pessoa p
           {$sqlJoin}
-         WHERE cd_pessoa = '{$this->arrRequest["cd_pessoa"]}'
+         WHERE cd_pessoa = $1
 SQL;
-      
-      if (!$this->ConexaoBanco->runQueryes($sqlDadosPessoa))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
 
-      return $this->ConexaoBanco->getLastQueryResults()[0];
+      return $this->Database->select($sqlDadosPessoa, [$this->arrRequest["cd_pessoa"]])[0];
     }
     
     /**
@@ -266,13 +277,12 @@ SQL;
          ORDER BY tp.nm_tipo
 SQL;
       
-      if (!$this->ConexaoBanco->runQueryes($sqlTipoUsuario))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
-      
+      $arrTipoUsuario = $this->Database->select($sqlTipoUsuario);
+
       $arrOptionsTipoPessoa = [];
-      
+
       // Loop para concatenar as opções em uma variável
-      foreach ($this->ConexaoBanco->getLastQueryResults() as $tipoUsuario)
+      foreach ($arrTipoUsuario as $tipoUsuario)
       {
         $idSelected = "";
         
@@ -329,13 +339,12 @@ SQL;
          ORDER BY c.nm_cidade
 SQL;
       
-      if (!$this->ConexaoBanco->runQueryes($sqlCidades))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
-      
+      $arrCidades = $this->Database->select($sqlCidades);
+
       $arrOptionsCidades = [];
-      
+
       // Loop para concatenar as opções de cidades em uma variável
-      foreach ($this->ConexaoBanco->getLastQueryResults() as $cidade)
+      foreach ($arrCidades as $cidade)
       {
         $idSelected = "";
         
