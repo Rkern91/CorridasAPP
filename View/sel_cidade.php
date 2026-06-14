@@ -4,7 +4,7 @@
   try
   {
     $CidadeController = new CidadeController();
-    $arrCidades       = $CidadeController->ControladorCidade->obterListagemCidades();
+    $arrCidades       = $CidadeController->obterListagemCidades();
   }
   catch (Exception $e)
   {

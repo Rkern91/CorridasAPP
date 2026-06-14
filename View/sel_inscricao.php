@@ -5,7 +5,7 @@
   try
   {
     $InscricaoController = new InscricaoController();
-    $arrInscricoes       = $InscricaoController->ControladorInscricao->obterListagemInscricoes();
+    $arrInscricoes       = $InscricaoController->obterListagemInscricoes();
   }
   catch (Exception $e)
   {

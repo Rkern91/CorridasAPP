@@ -4,7 +4,7 @@
   try
   {
     $CadastroUsuarioController = new CadastroUsuarioController();
-    $arrUsuario                = $CadastroUsuarioController->ControladorCadastroUsuario->obterExtratoUsuario();
+    $arrUsuario                = $CadastroUsuarioController->obterExtratoUsuario();
   }
   catch (Exception $e)
   {

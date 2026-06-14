@@ -4,13 +4,13 @@
   try
   {
     $CadastroUsuarioController = new CadastroUsuarioController();
-    $arrCidades                = $CadastroUsuarioController->ControladorCadastroUsuario->obterCidades();
+    $arrCidades                = $CadastroUsuarioController->obterCidades();
 
     $idEdicao  = isset($_SESSION["cd_pessoa"]);
     $arrPessoa = [];
 
     if ($idEdicao)
-      $arrPessoa = $CadastroUsuarioController->ControladorCadastroUsuario->obterDadosPessoa();
+      $arrPessoa = $CadastroUsuarioController->obterDadosPessoa();
   }
   catch (Exception $e)
   {

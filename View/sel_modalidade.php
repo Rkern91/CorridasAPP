@@ -4,7 +4,7 @@
   try
   {
     $ModalidadeController = new ModalidadeController();
-    $arrModalidades       = $ModalidadeController->ControladorModalidade->obterListagemModalidades();
+    $arrModalidades       = $ModalidadeController->obterListagemModalidades();
   }
   catch (Exception $e)
   {

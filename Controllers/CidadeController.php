@@ -1,30 +1,46 @@
 <?php
   require_once("../Model/FormCidade.php");
-  
+
   class CidadeController
   {
     /**
-     * @var FormCidade $ControladorCidade
+     * Model de cidade.
+     * @var FormCidade
      */
-    public FormCidade $ControladorCidade;
-    
+    private FormCidade $FormCidade;
+
     /**
      * Construtor de Classe
      */
     public function __construct()
     {
-      try
-      {
-        $this->ControladorCidade = new FormCidade($_REQUEST);
-      }
-      catch (Exception $e)
-      {
-        $this->tratarErros($e->getMessage(), $e->getCode());
-      }
+      $this->FormCidade = new FormCidade($_REQUEST);
     }
-    
-    private function tratarErros($dsErro, $codErro)
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterListagemCidades(): array
     {
-      //TODO: Fazer algo com o erro.
+      return $this->FormCidade->obterListagemCidades();
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterCidade(): array
+    {
+      return $this->FormCidade->obterCidade();
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterEstados(): array
+    {
+      return $this->FormCidade->obterEstados();
     }
   }

@@ -4,8 +4,8 @@
   try
   {
     $EventoController = new EventoController();
-    $arrCidades      = $EventoController->ControladorEvento->obterCidades();
-    $arrModalidades  = $EventoController->ControladorEvento->obterModalidades();
+    $arrCidades      = $EventoController->obterCidades();
+    $arrModalidades  = $EventoController->obterModalidades();
 
     $cdEvento   = $_REQUEST["cd_evento"] ?? "";
     $arrEvento  = [];
@@ -19,7 +19,7 @@
 
     if ($cdEvento !== "")
     {
-      $arrEvento  = $EventoController->ControladorEvento->obterDadosEvento();
+      $arrEvento  = $EventoController->obterDadosEvento();
       $cdCidade   = $arrEvento["cd_cidade"] ?? "";
       $dsNome     = $arrEvento["nm_evento"] ?? "";
       $dsData     = $arrEvento["dt_evento"] ?? "";

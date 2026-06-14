@@ -4,7 +4,7 @@
   try
   {
     $EventoController = new EventoController();
-    $arrEventos       = $EventoController->ControladorEvento->obterListagemEventos();
+    $arrEventos       = $EventoController->obterListagemEventos();
   }
   catch (Exception $e)
   {

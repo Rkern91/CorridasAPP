@@ -9,7 +9,7 @@
     $arrModalidade = [];
 
     if ($cdModalidade !== "")
-      $arrModalidade = $ModalidadeController->ControladorModalidade->obterModalidade();
+      $arrModalidade = $ModalidadeController->obterModalidade();
   }
   catch (Exception $e)
   {

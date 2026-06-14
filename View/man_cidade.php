@@ -4,7 +4,7 @@
   try
   {
     $CidadeController = new CidadeController();
-    $arrEstados       = $CidadeController->ControladorCidade->obterEstados();
+    $arrEstados       = $CidadeController->obterEstados();
 
     $cdCidade  = $_REQUEST["cd_cidade"] ?? "";
     $arrCidade = [];
@@ -12,7 +12,7 @@
 
     if ($cdCidade !== "")
     {
-      $arrCidade = $CidadeController->ControladorCidade->obterCidade();
+      $arrCidade = $CidadeController->obterCidade();
       $cdUf      = $arrCidade["cd_uf"] ?? "";
     }
   }

@@ -103,7 +103,7 @@ Relatório de entendimento entregue e aprovado pelo desenvolvedor:
 
 ---
 
-## Fase 2 — Models limpos ⏳ AGUARDANDO TESTE
+## Fase 2 — Models limpos ✅ (validada, commit `9cc612f`)
 
 Objetivo: remover **todo HTML** dos Models; eles passam a retornar **apenas dados**
 (arrays). O markup foi movido para as Views com PHP inline (Opção A — a componentização
@@ -168,7 +168,50 @@ de layout fica para a Fase 4).
 
 ---
 
+## Fase 3 — Controllers como intermediadores reais ⏳ AGUARDANDO TESTE
+
+Objetivo: o Controller passa a **comandar o Model** e entregar os dados à View; a View
+**deixa de acessar o Model diretamente**.
+
+### O que foi alterado e por quê
+- **Controllers de leitura reescritos** (`CidadeController`, `ModalidadeController`,
+  `EventoController`, `CadastroUsuarioController`, `InscricaoController`): o Model virou
+  propriedade **privada** e cada controller expõe métodos `obter*()` que delegam ao Model.
+  Removido o `tratarErros()` vazio que engolia exceções — agora elas propagam para o
+  `try/catch` da View (que redireciona para `erro.php`).
+- **Views atualizadas** (10 telas `sel_*`/`man_*` + usuário): passaram a chamar
+  `$XController->obter...()` em vez de `$XController->ControladorX->obter...()`. A View não
+  conhece mais o Model.
+- Mantidos como estão (escopo de outras fases): `ProcessActionFormController` (dispatcher
+  de escrita — a View já não toca o Model na escrita, pois faz POST para o controller),
+  `LoginController` (já intermediava), `TelaUserLoginController` (menu/HTML → Fase 4).
+
+### Verificação feita (contêineres no ar, porta 8082)
+- `php -l` em todos os Controllers/Views: sem erros. Nenhum `->Controlador` remanescente
+  nas Views (grep).
+- Smoke test HTTP autenticado (admin e comum): todas as telas HTTP 200, **zero erros/
+  warnings**. Dados fluindo pelos novos métodos do controller — comprovado em cidade
+  (9 itens), modalidade ("CORRIDA 5KM"), usuário ("Rafael Kern" / extrato).
+- Obs.: evento/inscrição renderizam vazios **porque a tabela `evento` foi esvaziada
+  durante os testes manuais** (excluir evento remove em cascata inscrições e vínculos de
+  modalidade). Não é regressão; a delegação é idêntica à das entidades comprovadas.
+
+### Como testar manualmente
+Recriar ao menos um evento (admin) e repetir os fluxos: listar/editar cidade, modalidade,
+evento; editar próprios dados e extrato; como comum, inscrever-se e gerenciar inscrição.
+
+## Pendências / dúvidas em aberto para o desenvolvedor
+- **Código comentado** com referência a `ConexaoBanco` em `FormUsuario::deletarAcao`
+  (TODO de exclusão de usuário). Implementar exclusão na Fase 5?
+- **Senhas em texto puro:** confirmado para a Fase 5.
+- **Output escaping (htmlspecialchars):** sugerido para a Fase 4.
+- **`FormEvento::obterDadosEvento` usa `INNER JOIN modalidade_evento`:** um evento sem
+  modalidade vinculada não aparece na edição. Hoje todo evento é criado com modalidade
+  pela UI, mas vale revisar (Fase 4/5).
+
+---
+
 ## Próxima fase
-**Fase 3 — Controllers como intermediadores reais:** o Controller recebe a requisição,
-chama o Model e entrega os dados à View; a View deixa de acessar o Model diretamente
-(hoje ainda faz `$Controller->ControladorX->obter...()`). Iniciar após validação da Fase 2.
+**Fase 4 — Views e novo layout:** menu fixo à esquerda + conteúdo à direita, responsivo;
+extrair `head`/`footer` reutilizáveis; tratar estados vazios e (sugestão) introduzir
+output escaping. Iniciar após validação da Fase 3.

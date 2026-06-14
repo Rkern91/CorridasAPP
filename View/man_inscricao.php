@@ -5,8 +5,8 @@
   try
   {
     $InscricaoController = new InscricaoController();
-    $arrEvento           = $InscricaoController->ControladorInscricao->obterDadosEventoInscricao();
-    $arrModalidades      = $InscricaoController->ControladorInscricao->obterModalidadesEvento();
+    $arrEvento           = $InscricaoController->obterDadosEventoInscricao();
+    $arrModalidades      = $InscricaoController->obterModalidadesEvento();
   }
   catch (Exception $e)
   {
