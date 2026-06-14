@@ -1,4 +1,5 @@
 <?php
+  require_once("../auth_guard.php");
   require_once("../Controllers/EventoController.php");
 
   try
@@ -13,24 +14,17 @@
     exit;
   }
 
-  $dsOperacao = $_REQUEST["id_operacao"] ?? "";
+  $dsOperacao     = $_REQUEST["id_operacao"] ?? "";
+  $cdPessoa       = $_SESSION["cd_pessoa"] ?? "";
+  $idUsuarioComum = isset($_SESSION["id_tipo_usuario"]) && $_SESSION["id_tipo_usuario"] == 2;
+  $tituloPagina   = "Eventos";
+  require("header.php");
 ?>
-
-<!DOCTYPE HTML>
-<html lang="pt-BR">
-<?php include("head.php"); ?>
-<body>
-  <?php
-    // head.php inicia a sessão; o tipo de usuário define os links exibidos.
-    $cdPessoa       = $_SESSION["cd_pessoa"] ?? "";
-    $idUsuarioComum = isset($_SESSION["id_tipo_usuario"]) && $_SESSION["id_tipo_usuario"] == 2;
-  ?>
   <?php if (empty($arrEventos)): ?>
     <?php if ($idUsuarioComum): ?>
       <div class="container">
         <h3>Eventos</h3>
-        <p>Nenhum evento disponível no momento.</p>
-        <p><a href="index.php">Voltar ao Início</a></p>
+        <p class="muted">Nenhum evento disponível no momento.</p>
       </div>
     <?php else: ?>
       <input type="hidden" id="ds_operacao" value="cadastrar">
@@ -81,13 +75,9 @@
           </tr>
         <?php endforeach; ?>
       </table>
-      <?php if ($idUsuarioComum): ?>
-        <p><a href="index.php">Voltar ao Início</a></p>
-      <?php else: ?>
-        <p><a href="man_evento.php">Adicionar Evento</a> | <a href="index.php">Voltar ao Início</a></p>
+      <?php if (!$idUsuarioComum): ?>
+        <p><a href="man_evento.php">Adicionar Evento</a></p>
       <?php endif; ?>
     </div>
   <?php endif; ?>
-</body>
-<?php include("footer.html");?>
-</html>
+<?php require("footer.php"); ?>

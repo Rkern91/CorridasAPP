@@ -1,4 +1,5 @@
 <?php
+  require_once("../auth_guard.php");
   require_once("../Controllers/CadastroUsuarioController.php");
 
   try
@@ -13,18 +14,10 @@
     exit;
   }
 
-  $nrTelefone = padronizaFone($arrUsuario["nr_telefone"] ?? "", "sys", "pt_BR");
+  $nrTelefone   = padronizaFone($arrUsuario["nr_telefone"] ?? "", "sys", "pt_BR");
+  $tituloPagina = "Extrato";
+  require("header.php");
 ?>
-
-<!DOCTYPE HTML>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CorridasAPP</title>
-  <link rel="stylesheet" href="../style.css">
-</head>
-<body>
   <div class="container">
     <h3>Dados do Usuário</h3>
     <table>
@@ -53,8 +46,5 @@
         <td><?= $arrUsuario["ds_email"] ?? "" ?></td>
       </tr>
     </table>
-    <a href="index.php">Voltar ao Início</a>
   </div>
-</body>
-<?php include("footer.html");?>
-</html>
+<?php require("footer.php"); ?>

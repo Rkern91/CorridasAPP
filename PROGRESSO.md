@@ -168,7 +168,7 @@ de layout fica para a Fase 4).
 
 ---
 
-## Fase 3 — Controllers como intermediadores reais ⏳ AGUARDANDO TESTE
+## Fase 3 — Controllers como intermediadores reais ✅ (commit `530a9ed`)
 
 Objetivo: o Controller passa a **comandar o Model** e entregar os dados à View; a View
 **deixa de acessar o Model diretamente**.
@@ -211,7 +211,57 @@ evento; editar próprios dados e extrato; como comum, inscrever-se e gerenciar i
 
 ---
 
+## Fase 4 — Views e novo layout ⏳ AGUARDANDO TESTE
+
+Tema escolhido pelo dev: **Profissional Sóbrio (claro)** — fundo claro, sidebar
+azul-ardósia (#243447), acento azul (#2563eb). CSS puro, sem framework.
+
+### O que foi alterado e por quê
+- **`style.css` reescrito**: design tokens (cores/raio/sombra), layout flex com **menu
+  fixo à esquerda + conteúdo à direita**, cartões, tabelas, formulários e botões
+  estilizados, layout de autenticação centralizado e **responsivo** (sidebar vira barra
+  no topo < 820px).
+- **Layout reutilizável** (extrai head/footer e o menu):
+  - `View/header.php` — abre a página; renderiza a **sidebar com menu por perfil**
+    (admin × comum, item ativo destacado) ou, com `$layoutSidebar=false`, um cartão
+    centralizado (login/cadastro/erro).
+  - `View/footer.php` — fecha o layout e injeta `funcoes.js`.
+  - `session.php` agora faz `session_start` **idempotente** (sem guardar); novo
+    `auth_guard.php` faz sessão **+ exige login** (usado no topo das telas internas).
+- **Menu virou a sidebar**: `Controllers/TelaUserLoginController.php` **removido**; o menu
+  (itens por perfil) agora vive em `header.php`. `index.php` virou um dashboard de
+  boas-vindas.
+- **Removidos** `View/head.php` e `View/footer.html` (substituídos por header/footer).
+- **Todas as Views** migradas para `require("header.php")`/`require("footer.php")`:
+  - Internas (exigem login via `auth_guard`): `sel_*`/`man_*` de cidade, modalidade,
+    evento, inscrição + `con_dados_usuario`.
+  - `man_cadastro_usuario` tem **layout duplo**: cartão centralizado para cadastro novo
+    (sem login) e layout com sidebar quando o usuário logado edita os próprios dados.
+  - `login.php` e `erro.php` no layout centralizado.
+- **`LoginController::realizarLoginUsuario()`** agora retorna `bool` (sem `echo`/redirect
+  internos); `login.php` trata sucesso (redirect) e falha (mensagem na tela). Removido o
+  `session_start()` solto de `LoginController` e `CadastroUsuarioController` (a View cuida
+  da sessão).
+
+### Verificação feita (contêineres no ar, porta 8082)
+- `php -l` em todos os arquivos: sem erros.
+- Smoke test HTTP: login público (cartão, sem sidebar); POST login → 302; **todas** as
+  telas internas (admin e comum) HTTP 200 **com sidebar e zero erros/warnings**; cadastro
+  público em cartão (modo inserir, selects populados); **guard** redireciona acesso sem
+  login (302); **menu por perfil** correto (admin vê Cidades/Modalidades; comum vê Minhas
+  Inscrições e não vê Cidades); item ativo destacado; logout → 302.
+
+### Observações / pendências
+- **Controle de acesso real ainda é da Fase 5**: o menu já é por perfil e as telas exigem
+  login, mas um usuário comum ainda conseguiria abrir `man_evento.php`/`man_cidade.php`
+  pela URL. O bloqueio por perfil será feito na Fase 5.
+- **Output escaping**: ainda não aplicado (mantido o comportamento atual). Pode entrar na
+  Fase 5 ou como tarefa de segurança à parte.
+- Senhas em texto puro: Fase 5.
+
+---
+
 ## Próxima fase
-**Fase 4 — Views e novo layout:** menu fixo à esquerda + conteúdo à direita, responsivo;
-extrair `head`/`footer` reutilizáveis; tratar estados vazios e (sugestão) introduzir
-output escaping. Iniciar após validação da Fase 3.
+**Fase 5 — Separação de papéis (admin × usuário):** controle de perfil sobre `cd_id_tipo`
+(sem mudança de schema), **protegendo rotas/telas administrativas** por perfil; tratar
+hashing de senha (`password_hash`/`password_verify`). Iniciar após validação da Fase 4.

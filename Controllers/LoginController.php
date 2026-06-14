@@ -1,8 +1,7 @@
 <?php
   require_once("../Model/Usuario.php");
   require_once("../helpers.inc.php");
-  session_start();
-  
+
   class LoginController
   {
     /**
@@ -19,24 +18,18 @@
     }
     
     /**
-     * Executa o login do usuario e direciona para a tela de entrada.
+     * Executa o login do usuario. Em caso de sucesso, popula a sessão.
+     * @return bool true se autenticou, false caso contrário.
      * @throws Exception
      */
-    public function realizarLoginUsuario()
+    public function realizarLoginUsuario(): bool
     {
       if (!$this->Usuario->realizarLogin())
-      {
-        session_destroy();
-        echo "<script>
-                  alert('Usuário ou senha incorretos');
-              </script>";
-      }
-      else
-      {
-        $_SESSION["id_tipo_usuario"]  = $this->Usuario->getCdIdTipo();
-        $_SESSION["cd_pessoa"]        = $this->Usuario->getCdPessoa();
+        return false;
 
-        header("Location: index.php?id_operacao=login");
-      }
+      $_SESSION["id_tipo_usuario"] = $this->Usuario->getCdIdTipo();
+      $_SESSION["cd_pessoa"]       = $this->Usuario->getCdPessoa();
+
+      return true;
     }
   }

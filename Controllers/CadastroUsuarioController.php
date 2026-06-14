@@ -1,6 +1,5 @@
 <?php
   require_once("../Model/FormUsuario.php");
-  session_start();
 
   class CadastroUsuarioController
   {
