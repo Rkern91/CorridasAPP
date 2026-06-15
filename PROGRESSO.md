@@ -261,7 +261,7 @@ azul-ardósia (#243447), acento azul (#2563eb). CSS puro, sem framework.
 
 ---
 
-## Fase 5 — Separação de papéis (admin × usuário) + segurança ⏳ AGUARDANDO TESTE
+## Fase 5 — Separação de papéis (admin × usuário) + segurança ✅ (validada, commit `4c31706`)
 
 Decisões do dev: hashing **ampliando a coluna** + upgrade no login; **output escaping** já
 nesta fase.
@@ -328,7 +328,16 @@ nesta fase.
 
 ---
 
-## Conclusão da refatoração
-As 5 fases planejadas estão implementadas na branch `refactor` (commits `8a559a6`,
-`9cc612f`, `530a9ed`, `597fa5a` e o desta fase). Próximo passo do fluxo (seção 8 das
-instruções): **merge em `master` após a validação final do desenvolvedor**.
+## Conclusão da refatoração ✅
+As 5 fases planejadas foram implementadas, testadas pelo dev e integradas. A branch
+`refactor` (commits `8a559a6`, `9cc612f`, `530a9ed`, `597fa5a`, `4c31706` + o ajuste de
+listas vazias `fb430ac`) recebeu **validação final do desenvolvedor** e foi **mesclada em
+`master`** (seção 8 das instruções), com push para `origin/master`. A branch `refactor`
+fica preservada como histórico das fases.
+
+### Pendências de backlog (não bloqueiam o merge; tratar quando o dev priorizar)
+- `FormUsuario::deletarAcao` ainda vazio (exclusão de conta não implementada).
+- Ownership de inscrição na alteração/exclusão por `cd_inscricao` (hardening).
+- `sql/script_inserts.sql` com senhas-semente em texto puro (migram no 1º login).
+- `FormEvento::obterDadosEvento` com `INNER JOIN modalidade_evento` (evento sem
+  modalidade não aparece na edição).
