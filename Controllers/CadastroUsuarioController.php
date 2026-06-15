@@ -1,31 +1,46 @@
 <?php
   require_once("../Model/FormUsuario.php");
-  session_start();
-  
+
   class CadastroUsuarioController
   {
     /**
-     * @var FormUsuario $ControladorCadastroUsuario
+     * Model de usuário.
+     * @var FormUsuario
      */
-    public FormUsuario $ControladorCadastroUsuario;
-    
+    private FormUsuario $FormUsuario;
+
     /**
      * Construtor de Classe
      */
     public function __construct()
     {
-      try
-      {
-        $this->ControladorCadastroUsuario = new FormUsuario($_REQUEST);
-      }
-      catch (Exception $e)
-      {
-        $this->tratarErros($e->getMessage(), $e->getCode());
-      }
+      $this->FormUsuario = new FormUsuario($_REQUEST);
     }
-    
-    private function tratarErros($dsErro, $codErro)
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterDadosPessoa(): array
     {
-      //TODO: Fazer algo com o erro.
+      return $this->FormUsuario->obterDadosPessoa();
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterExtratoUsuario(): array
+    {
+      return $this->FormUsuario->obterExtratoUsuario();
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterCidades(): array
+    {
+      return $this->FormUsuario->obterCidades();
     }
   }

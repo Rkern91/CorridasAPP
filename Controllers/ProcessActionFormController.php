@@ -1,12 +1,13 @@
 <?php
   require_once("ClassLoaderController.php");
   require_once("../helpers.inc.php");
-  
+  require_once("../session.php");
+
   class ProcessActionFormController
   {
     /**
-     * Array de classes instanciadas de forma dinâmica
-     * no método CallProcessAction
+     * Array de classes instanciadas de forma dinï¿½mica
+     * no mï¿½todo CallProcessAction
      * @var array|string[]
      */
     protected array $opNmClass = [
@@ -19,13 +20,13 @@
     
     /**
      * Nome da tabela atual onde
-     * será realizado operações de banco
+     * serï¿½ realizado operaï¿½ï¿½es de banco
      * @var string|mixed
      */
     public string $nmTabela;
     
     /**
-     * Ação executada no formulário
+     * Aï¿½ï¿½o executada no formulï¿½rio
      * @var string|mixed
      */
     public string $formAction;
@@ -47,14 +48,47 @@
       $this->formAction = $arrRequest["f_action"];
       $this->arrRequest = $arrRequest;
     }
-    
+
     /**
-     * Método responsável por processar a requisição do formulário
-     * para cada classe do Projeto de forma dinâmica.
+     * Garante que a aÃ§Ã£o Ã© permitida ao usuÃ¡rio atual:
+     * - cadastro de novo usuÃ¡rio (pessoa/inserir) Ã© pÃºblico;
+     * - demais aÃ§Ãµes exigem login;
+     * - cidade/evento/modalidade sÃ£o exclusivas de administradores;
+     * - em aÃ§Ãµes sobre dados prÃ³prios (pessoa/inscricao), forÃ§a o cd_pessoa da sessÃ£o.
+     * @return void
+     */
+    protected function validarPermissao()
+    {
+      $tabelasAdmin    = ["cidade", "evento", "modalidade"];
+      $cadastroPublico = ($this->nmTabela == "pessoa" && $this->formAction == "inserir");
+
+      if (!$cadastroPublico && !isset($_SESSION["cd_pessoa"]))
+      {
+        header("Location: ../View/login.php");
+        exit;
+      }
+
+      if (in_array($this->nmTabela, $tabelasAdmin) && (($_SESSION["id_tipo_usuario"] ?? null) != 1))
+      {
+        $dsMensagem = "Acesso negado: aÃ§Ã£o restrita a administradores.";
+        header("Location: ../View/erro.php?dsOrigem={$this->nmTabela}&dsMensagem=" . urlencode($dsMensagem));
+        exit;
+      }
+
+      //UsuÃ¡rio sÃ³ mexe nos prÃ³prios dados/inscriÃ§Ãµes: o cd_pessoa vem da sessÃ£o, nÃ£o do request.
+      if (!$cadastroPublico && in_array($this->nmTabela, ["pessoa", "inscricao"]))
+        $this->arrRequest["cd_pessoa"] = $_SESSION["cd_pessoa"];
+    }
+
+    /**
+     * MÃ©todo responsÃ¡vel por processar a requisiÃ§Ã£o do formulÃ¡rio
+     * para cada classe do Projeto de forma dinÃ¢mica.
      * @return void
      */
     public function callProcessAction()
     {
+      $this->validarPermissao();
+
       try
       {
         //Monta o nome do metodo que vai ser chamado na classe.
@@ -96,13 +130,13 @@
     /**
      * Padroniza o retorno de erros
      * e redireciona para a tela de erros.
-     * @param $dsMensagem - Descricção do erro ocorrido na operação.
+     * @param $dsMensagem - Descricï¿½ï¿½o do erro ocorrido na operaï¿½ï¿½o.
      * @return void
      */
     protected function padronizarRetornoErro($dsMensagem)
     {
       $error_message = "Erro ao {$this->formAction} registro. {$dsMensagem}";
-      header("Location: ../View/erro.php?id_erro=" . ConexaoBanco::$opIdErrosBd[$this->formAction] . "&dsOrigem={$this->nmTabela}&dsMensagem=" . urlencode($error_message));
+      header("Location: ../View/erro.php?id_erro=" . Database::$opIdErrosBd[$this->formAction] . "&dsOrigem={$this->nmTabela}&dsMensagem=" . urlencode($error_message));
       exit;
     }
   }

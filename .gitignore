@@ -2,3 +2,6 @@
 .idea/
 
 .env
+
+# Scripts de teste manual (descartáveis)
+test/

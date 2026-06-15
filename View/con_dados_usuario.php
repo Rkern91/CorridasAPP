@@ -1,33 +1,50 @@
 <?php
+  require_once("../auth_guard.php");
   require_once("../Controllers/CadastroUsuarioController.php");
+
+  try
+  {
+    $CadastroUsuarioController = new CadastroUsuarioController();
+    $arrUsuario                = $CadastroUsuarioController->obterExtratoUsuario();
+  }
+  catch (Exception $e)
+  {
+    $error_message = "Erro ao obter dados do formulário! DETALHES: " . $e->getMessage();
+    header("Location: erro.php?dsOrigem=extratoUsuario&dsMensagem=" . urlencode($error_message));
+    exit;
+  }
+
+  $nrTelefone   = padronizaFone($arrUsuario["nr_telefone"] ?? "", "sys", "pt_BR");
+  $tituloPagina = "Extrato";
+  require("header.php");
 ?>
-
-<!DOCTYPE HTML>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CorridasAPP</title>
-  <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-
-  <?php
-    try
-    {
-      $CadastroUsuarioController     = new CadastroUsuarioController();
-      $formManutencaoCadastroUsuario = $CadastroUsuarioController->ControladorCadastroUsuario->montarExtratoDadosUsuario();
-      
-      echo $formManutencaoCadastroUsuario;
-    }
-    catch (Exception $e)
-    {
-      $error_message = "Erro ao obter dados do formulário! DETALHES: " . $e->getMessage();
-      header("Location: erro.php?dsOrigem=extratoUsuario&dsMensagem=" . urlencode($error_message));
-      exit;
-    }
-  ?>
-</body>
-<?php include("footer.html");?>
-</html>
-
+  <div class="container">
+    <h3>Dados do Usuário</h3>
+    <table>
+      <tr>
+        <th>Nome</th>
+        <td><?= h($arrUsuario["nm_pessoa"] ?? "") ?></td>
+      </tr>
+      <tr>
+        <th>Dt. Nascimento</th>
+        <td><?= h($arrUsuario["dt_nascimento"] ?? "") ?></td>
+      </tr>
+      <tr>
+        <th>Tipo</th>
+        <td><?= h($arrUsuario["tipo_usuario"] ?? "") ?></td>
+      </tr>
+      <tr>
+        <th>Cidade</th>
+        <td><?= h($arrUsuario["nm_cidade"] ?? "") ?></td>
+      </tr>
+      <tr>
+        <th>Telefone</th>
+        <td><?= h($nrTelefone) ?></td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td><?= h($arrUsuario["ds_email"] ?? "") ?></td>
+      </tr>
+    </table>
+  </div>
+<?php require("footer.php"); ?>

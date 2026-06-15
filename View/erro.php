@@ -1,4 +1,6 @@
 <?php
+  require_once("../session.php");
+
   $dsMsg         = "";
   $dsLinkRetorno = "";
 
@@ -29,10 +31,10 @@
         break;
     }
   }
-  
-  $dsLinkInicio = "<a href='index.php'>Voltar ao Inicio</a>";
-  
-  switch ($_REQUEST["dsOrigem"])
+
+  $dsLinkInicio = "<a href='index.php'>Voltar ao Início</a>";
+
+  switch ($_REQUEST["dsOrigem"] ?? "")
   {
     case "cidade":
       $dsLinkRetorno = "<a href=\"sel_cidade.php\">Voltar p/ Listagem de Cidades</a> | " . $dsLinkInicio;
@@ -43,42 +45,29 @@
     case "modalidade":
       $dsLinkRetorno = "<a href=\"sel_modalidade.php\">Voltar p/ Listagem de Modalidades</a> | " . $dsLinkInicio;
     break;
+    case "inscricao":
+      $dsLinkRetorno = "<a href=\"sel_inscricao.php\">Voltar p/ Minhas Inscrições</a> | " . $dsLinkInicio;
+    break;
     case "cadastroUsuario":
       $dsLinkRetorno = $dsLinkInicio;
-      
+
       if (!isset($_SESSION["cd_pessoa"]))
-        $dsLinkRetorno = "<a href=\"man_cadastro_usuario.php\">Cadastre-se</a> | <a href=\"login.php\">Voltar ao Inicio</a>";
+        $dsLinkRetorno = "<a href=\"man_cadastro_usuario.php\">Cadastre-se</a> | <a href=\"login.php\">Voltar ao Login</a>";
     break;
     case "login":
     case "extratoUsuario":
       $dsLinkRetorno = $dsLinkInicio;
     break;
   }
-  
-  $dsLinkRetorno = "<p>" . $dsLinkRetorno . "</p>";
-  
+
   if (isset($_REQUEST["dsMensagem"]))
     $dsMsg = urldecode($_REQUEST["dsMensagem"]);
-  
-  $divTable = "<div class=\"container\">
-                 <h3>Ops!</h3>
-                 <table class=\"erro\">
-                   <tr>
-                     <th>STATUS</th>
-                     <td><b>{$dsMsg}</b></td>
-                   </tr>
-                 </table>
-                 {$dsLinkRetorno}
-               </div>";
-?>
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <link rel="stylesheet" type="text/css" href="../style.css">
-    <title>ERRO</title>
-  </head>
-  <body>
-    <?php echo $divTable ?>
-  </body>
-</html>
+  $tituloPagina  = "Erro";
+  $layoutSidebar = false;
+  require("header.php");
+?>
+  <h3>Ops!</h3>
+  <div class="alert alert-danger"><?= h($dsMsg) ?></div>
+  <p><?= $dsLinkRetorno ?></p>
+<?php require("footer.php"); ?>

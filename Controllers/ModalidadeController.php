@@ -1,30 +1,37 @@
 <?php
   require_once("../Model/FormModalidade.php");
-  
+
   class ModalidadeController
   {
     /**
-     * @var FormModalidade $ControladorModalidade
+     * Model de modalidade.
+     * @var FormModalidade
      */
-    public FormModalidade $ControladorModalidade;
-    
+    private FormModalidade $FormModalidade;
+
     /**
      * Construtor de Classe
      */
     public function __construct()
     {
-      try
-      {
-        $this->ControladorModalidade = new FormModalidade($_REQUEST);
-      }
-      catch (Exception $e)
-      {
-        $this->tratarErros($e->getMessage(), $e->getCode());
-      }
+      $this->FormModalidade = new FormModalidade($_REQUEST);
     }
-    
-    private function tratarErros($dsErro, $codErro)
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterListagemModalidades(): array
     {
-      //TODO: Fazer algo com o erro.
+      return $this->FormModalidade->obterListagemModalidades();
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterModalidade(): array
+    {
+      return $this->FormModalidade->obterModalidade();
     }
   }

@@ -313,6 +313,10 @@ function validarCampos()
     break;
   }
 
+  //Na edição de usuário a senha é opcional (em branco mantém a senha atual)
+  if (idTabela === 'pessoa' && document.querySelector('input[name="f_action"]:checked').value !== 'inserir')
+    delete arrFields['ds_senha'];
+
   for (var key in arrFields)
   {
     if (arrFields.hasOwnProperty(key))
@@ -344,13 +348,9 @@ function validarCampos()
 function verificarAcaoForm()
 {
   const idOperacao = document.getElementById('ds_operacao');
-  
+
   if (idOperacao ?? false)
   {
-    const dsOrigem = document.getElementById('ds_origem');
-    var   dsLink   = '';
-    var   dsTexto  = '';
-    
     switch (idOperacao.value)
     {
       case 'deletar':
@@ -374,28 +374,6 @@ function verificarAcaoForm()
       case 'exclusaoCadastro':
         alert('Cadastro REMOVIDO com sucesso!');
       break;
-      case 'cadastrar':
-        switch (dsOrigem.value)
-        {
-          case 'cidade':
-            dsLink  = 'man_cidade.php';
-            dsTexto = 'Nenhuma cidade cadastrada ou todas as cidades foram removidos! Deseja cadastrar nova cidade?';
-          break;
-          case 'evento':
-            dsLink  = 'man_evento.php';
-            dsTexto = 'Nenhum evento cadastro ou todos os eventos foram removidos! Deseja cadastrar novo evento?';
-          break;
-          case 'modalidade':
-            dsLink  = 'man_modalidade.php';
-            dsTexto = 'Nenhuma modalidade cadastrada ou todas as modalidades foram removidas! Deseja cadastrar nova modalidade?';
-          break;
-        }
-        
-        if (confirm(dsTexto))
-          window.location.href = dsLink;
-        else
-          window.location.href = 'index.php';
-        break;
     }
   }
 }

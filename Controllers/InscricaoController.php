@@ -1,30 +1,46 @@
 <?php
   require_once("../Model/FormInscricao.php");
-  
+
   class InscricaoController
   {
     /**
-     * @var FormInscricao $ControladorInscricao
+     * Model de inscrição.
+     * @var FormInscricao
      */
-    public FormInscricao $ControladorInscricao;
-    
+    private FormInscricao $FormInscricao;
+
     /**
      * Construtor de Classe
      */
     public function __construct()
     {
-      try
-      {
-        $this->ControladorInscricao = new FormInscricao($_REQUEST);
-      }
-      catch (Exception $e)
-      {
-        $this->tratarErros($e->getMessage(), $e->getCode());
-      }
+      $this->FormInscricao = new FormInscricao($_REQUEST);
     }
-    
-    private function tratarErros($dsErro, $codErro)
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterListagemInscricoes(): array
     {
-      //TODO: Fazer algo com o erro.
+      return $this->FormInscricao->obterListagemInscricoes();
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterDadosEventoInscricao(): array
+    {
+      return $this->FormInscricao->obterDadosEventoInscricao();
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterModalidadesEvento(): array
+    {
+      return $this->FormInscricao->obterModalidadesEvento();
     }
   }

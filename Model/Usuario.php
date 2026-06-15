@@ -1,14 +1,14 @@
 <?php
-  require_once("ConexaoBanco.php");
+  require_once("Database.php");
   require_once("../helpers.inc.php");
-  
+
   class Usuario
   {
     /**
-     * Classe de Conexao ao Banco de Dados
-     * @var ConexaoBanco
+     * Camada de acesso ao Banco de Dados
+     * @var Database
      */
-    private ConexaoBanco $ConexaoBanco;
+    private Database $Database;
 
     private int $cd_pessoa;
     private string $ds_email;
@@ -19,8 +19,8 @@
     {
       $this->setDsEmail($ds_email);
       $this->setDsSenha($ds_senha);
-      
-      $this->ConexaoBanco = new ConexaoBanco();
+
+      $this->Database = new Database();
     }
     
     /**
@@ -95,24 +95,45 @@
     public function realizarLogin(): bool
     {
       $sqlLoginUsuario =<<<SQL
-        SELECT cd_pessoa, ds_email, cd_id_tipo
+        SELECT cd_pessoa, cd_id_tipo, ds_senha
           FROM pessoa
-         WHERE ds_email = '{$this->getDsEmail()}'
-           AND ds_senha = '{$this->getDsSenha()}'
+         WHERE ds_email = $1
 SQL;
-      
-      if (!$this->ConexaoBanco->runQueryes($sqlLoginUsuario))
-        throw new Exception("DESCRIÇÃO: " . $this->ConexaoBanco->getLastQueryError());
-      
-      $arrLoginUsuario = current($this->ConexaoBanco->getLastQueryResults());
 
-      if (isset($arrLoginUsuario["cd_pessoa"]))
+      $arrResultado    = $this->Database->select($sqlLoginUsuario, [$this->getDsEmail()]);
+      $arrLoginUsuario = $arrResultado ? current($arrResultado) : [];
+
+      if (!isset($arrLoginUsuario["cd_pessoa"]))
+        return false;
+
+      $dsSenhaArmazenada = $arrLoginUsuario["ds_senha"];
+      $dsSenhaInformada  = $this->getDsSenha();
+      $idAutenticado     = password_verify($dsSenhaInformada, $dsSenhaArmazenada);
+
+      // Senha legada em texto puro: autentica e migra para hash (upgrade transparente).
+      if (!$idAutenticado && $dsSenhaArmazenada === $dsSenhaInformada)
       {
-        $this->setCdIdTipo($arrLoginUsuario["cd_id_tipo"]);
-        $this->setCdPessoa($arrLoginUsuario["cd_pessoa"]);
-        return true;
+        $idAutenticado = true;
+        $this->atualizarSenhaHash($arrLoginUsuario["cd_pessoa"], $dsSenhaInformada);
       }
-      
-      return false;
+
+      if (!$idAutenticado)
+        return false;
+
+      $this->setCdIdTipo($arrLoginUsuario["cd_id_tipo"]);
+      $this->setCdPessoa($arrLoginUsuario["cd_pessoa"]);
+      return true;
+    }
+
+    /**
+     * Regrava a senha de uma pessoa já com hash (migração de senha legada).
+     * @throws Exception
+     */
+    private function atualizarSenhaHash(int $cdPessoa, string $dsSenha): void
+    {
+      $this->Database->execute(
+        "UPDATE pessoa SET ds_senha = $1 WHERE cd_pessoa = $2",
+        [password_hash($dsSenha, PASSWORD_DEFAULT), $cdPessoa]
+      );
     }
   }
