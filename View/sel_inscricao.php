@@ -28,7 +28,6 @@
       <h3>Listagem de Inscrições</h3>
       <?php if ($dsOperacao): ?>
         <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
-        <input type="hidden" id="ds_origem"   value="inscricao">
       <?php endif; ?>
       <table>
         <tr>

@@ -20,23 +20,14 @@
   $tituloPagina   = "Eventos";
   require("header.php");
 ?>
-  <?php if (empty($arrEventos)): ?>
-    <?php if ($idUsuarioComum): ?>
-      <div class="container">
-        <h3>Eventos</h3>
-        <p class="muted">Nenhum evento disponível no momento.</p>
-      </div>
-    <?php else: ?>
-      <input type="hidden" id="ds_operacao" value="cadastrar">
-      <input type="hidden" id="ds_origem"   value="evento">
+  <div class="container">
+    <h3>Listagem de Eventos</h3>
+    <?php if ($dsOperacao): ?>
+      <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
     <?php endif; ?>
-  <?php else: ?>
-    <div class="container">
-      <h3>Listagem de Eventos</h3>
-      <?php if ($dsOperacao): ?>
-        <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
-        <input type="hidden" id="ds_origem"   value="evento">
-      <?php endif; ?>
+    <?php if (empty($arrEventos)): ?>
+      <p class="muted">Nenhum evento <?= $idUsuarioComum ? "disponível no momento" : "cadastrado" ?>.</p>
+    <?php else: ?>
       <table>
         <tr>
           <th>Cód.</th>
@@ -75,9 +66,9 @@
           </tr>
         <?php endforeach; ?>
       </table>
-      <?php if (!$idUsuarioComum): ?>
-        <p><a href="man_evento.php">Adicionar Evento</a></p>
-      <?php endif; ?>
-    </div>
-  <?php endif; ?>
+    <?php endif; ?>
+    <?php if (!$idUsuarioComum): ?>
+      <p><a href="man_evento.php">Adicionar Evento</a></p>
+    <?php endif; ?>
+  </div>
 <?php require("footer.php"); ?>

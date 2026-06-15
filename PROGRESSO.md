@@ -320,6 +320,14 @@ nesta fase.
 
 ---
 
+## Ajustes pós-refatoração (durante os testes do dev)
+- **Listas vazias (`sel_*`):** em vez do popup `confirm()` sugerindo cadastro, a tela agora
+  carrega normalmente exibindo "Nenhum registro cadastrado." e o botão **Adicionar** abaixo
+  (admin). Removido o caso `cadastrar`/`confirm()` do `funcoes.js` (sem uso) e os
+  `ds_origem` órfãos das Views. Alertas de sucesso (inserir/atualizar/excluir) preservados.
+
+---
+
 ## Conclusão da refatoração
 As 5 fases planejadas estão implementadas na branch `refactor` (commits `8a559a6`,
 `9cc612f`, `530a9ed`, `597fa5a` e o desta fase). Próximo passo do fluxo (seção 8 das

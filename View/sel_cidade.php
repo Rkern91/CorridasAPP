@@ -18,16 +18,14 @@
   $tituloPagina = "Cidades";
   require("header.php");
 ?>
-  <?php if (empty($arrCidades)): ?>
-    <input type="hidden" id="ds_operacao" value="cadastrar">
-    <input type="hidden" id="ds_origem"   value="cidade">
-  <?php else: ?>
-    <div class="container">
-      <h3>Listagem de Cidades</h3>
-      <?php if ($dsOperacao): ?>
-        <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
-        <input type="hidden" id="ds_origem"   value="cidade">
-      <?php endif; ?>
+  <div class="container">
+    <h3>Listagem de Cidades</h3>
+    <?php if ($dsOperacao): ?>
+      <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
+    <?php endif; ?>
+    <?php if (empty($arrCidades)): ?>
+      <p class="muted">Nenhuma cidade cadastrada.</p>
+    <?php else: ?>
       <table>
         <tr>
           <th>Cód.</th>
@@ -42,7 +40,7 @@
           </tr>
         <?php endforeach; ?>
       </table>
-      <p><a href="man_cidade.php">Adicionar Cidade</a></p>
-    </div>
-  <?php endif; ?>
+    <?php endif; ?>
+    <p><a href="man_cidade.php">Adicionar Cidade</a></p>
+  </div>
 <?php require("footer.php"); ?>

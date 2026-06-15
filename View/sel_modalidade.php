@@ -18,16 +18,14 @@
   $tituloPagina = "Modalidades";
   require("header.php");
 ?>
-  <?php if (empty($arrModalidades)): ?>
-    <input type="hidden" id="ds_operacao" value="cadastrar">
-    <input type="hidden" id="ds_origem"   value="modalidade">
-  <?php else: ?>
-    <div class="container">
-      <h3>Listagem de Modalidades</h3>
-      <?php if ($dsOperacao): ?>
-        <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
-        <input type="hidden" id="ds_origem"   value="modalidade">
-      <?php endif; ?>
+  <div class="container">
+    <h3>Listagem de Modalidades</h3>
+    <?php if ($dsOperacao): ?>
+      <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
+    <?php endif; ?>
+    <?php if (empty($arrModalidades)): ?>
+      <p class="muted">Nenhuma modalidade cadastrada.</p>
+    <?php else: ?>
       <table>
         <tr>
           <th>Cód.</th>
@@ -48,7 +46,7 @@
           </tr>
         <?php endforeach; ?>
       </table>
-      <p><a href="man_modalidade.php">Adicionar Modalidade</a></p>
-    </div>
-  <?php endif; ?>
+    <?php endif; ?>
+    <p><a href="man_modalidade.php">Adicionar Modalidade</a></p>
+  </div>
 <?php require("footer.php"); ?>
