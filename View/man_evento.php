@@ -1,5 +1,5 @@
 <?php
-  require_once("../auth_guard.php");
+  require_once("../admin_guard.php");
   require_once("../Controllers/EventoController.php");
 
   try
@@ -44,16 +44,16 @@
     <h3>Manutenção de Evento</h3>
     <form action="../Controllers/ProcessActionFormController.php" id="form" method="post">
       <?php if ($cdEvento !== ""): ?>
-        <input type="hidden" name="cd_evento" value="<?= $arrEvento["cd_evento"] ?>">
+        <input type="hidden" name="cd_evento" value="<?= h($arrEvento["cd_evento"]) ?>">
       <?php endif; ?>
       <input type="hidden" name="tabela"             id="id_tabela"          value="evento">
       <input type="hidden" name="tela"               id="id_tela"            value="manutencao">
-      <input type="hidden" name="arr_cd_modalidades" id="arr_cd_modalidades" value="<?= $dsCdsModal ?>">
-      <input type="hidden" name="qt_modalidades"     id="qt_modalidades"     value="<?= $qtModal ?>">
+      <input type="hidden" name="arr_cd_modalidades" id="arr_cd_modalidades" value="<?= h($dsCdsModal) ?>">
+      <input type="hidden" name="qt_modalidades"     id="qt_modalidades"     value="<?= h($qtModal) ?>">
       <table>
         <tr>
           <th>Nome</th>
-          <td colspan="3" style="text-align: left"><input type="text" name="nm_evento" id="nm_evento" size="40" minlength="2" value="<?= $dsNome ?>" oninput="validateInput(this)"></td>
+          <td colspan="3" style="text-align: left"><input type="text" name="nm_evento" id="nm_evento" size="40" minlength="2" value="<?= h($dsNome) ?>" oninput="validateInput(this)"></td>
         </tr>
         <tr>
           <th>Cidade</th>
@@ -61,28 +61,28 @@
             <select name="cd_cidade" id="cd_cidade">
               <option value=""></option>
               <?php foreach ($arrCidades as $cidade): ?>
-                <option value="<?= $cidade["value"] ?>" <?= ($cdCidade == $cidade["value"]) ? "selected" : "" ?>><?= $cidade["description"] ?></option>
+                <option value="<?= h($cidade["value"]) ?>" <?= ($cdCidade == $cidade["value"]) ? "selected" : "" ?>><?= h($cidade["description"]) ?></option>
               <?php endforeach; ?>
             </select>
           </td>
         </tr>
         <tr>
           <th>Data</th>
-          <td style="text-align: left"><input type="date" name="dt_evento" id="dt_evento" value="<?= $dsData ?>"></td>
+          <td style="text-align: left"><input type="date" name="dt_evento" id="dt_evento" value="<?= h($dsData) ?>"></td>
           <th>Hora</th>
-          <td><input type="time" name="hr_evento" id="hr_evento" value="<?= $dsHora ?>"></td>
+          <td><input type="time" name="hr_evento" id="hr_evento" value="<?= h($dsHora) ?>"></td>
         </tr>
         <tr>
           <th>Modalidades</th>
           <td colspan="3" style="text-align: left">
             <select id="op_id_modalidades">
               <?php foreach ($arrModalidades as $modal): ?>
-                <option value="<?= $modal["value"] ?>"><?= $modal["description"] ?></option>
+                <option value="<?= h($modal["value"]) ?>"><?= h($modal["description"]) ?></option>
               <?php endforeach; ?>
             </select>
             <a title="Adicionar Modalidade" id="add" onclick="alterarModalidadesSelecionadas('add')">(+)</a> |
             <a title="Remover Modalidade"   id="rem" onclick="alterarModalidadesSelecionadas('rem')">(-)</a>
-            <input type="text" id="dsModals" value="<?= $dsKmModal ?>" readonly>
+            <input type="text" id="dsModals" value="<?= h($dsKmModal) ?>" readonly>
           </td>
         </tr>
         <tr>

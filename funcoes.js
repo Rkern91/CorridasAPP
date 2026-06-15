@@ -313,6 +313,10 @@ function validarCampos()
     break;
   }
 
+  //Na edição de usuário a senha é opcional (em branco mantém a senha atual)
+  if (idTabela === 'pessoa' && document.querySelector('input[name="f_action"]:checked').value !== 'inserir')
+    delete arrFields['ds_senha'];
+
   for (var key in arrFields)
   {
     if (arrFields.hasOwnProperty(key))

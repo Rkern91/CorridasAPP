@@ -45,7 +45,7 @@
         $this->arrRequest["ds_sexo"],
         $this->arrRequest["cd_cidade"],
         $this->arrRequest["ds_email"],
-        $this->arrRequest["ds_senha"]
+        password_hash($this->arrRequest["ds_senha"], PASSWORD_DEFAULT)
       ]);
     }
 
@@ -57,27 +57,41 @@
      */
     public function atualizarAcao()
     {
+      $arrParams = [
+        $this->arrRequest["nm_pessoa"],
+        $this->arrRequest["nr_telefone"],
+        $this->arrRequest["dt_nascimento"],
+        $this->arrRequest["ds_sexo"],
+        $this->arrRequest["cd_cidade"],
+        $this->arrRequest["ds_email"]
+      ];
+
+      // A senha só é alterada se uma nova foi informada; em branco mantém a atual.
+      $dsSenha = $this->arrRequest["ds_senha"] ?? "";
+
+      if ($dsSenha !== "")
+      {
+        $sqlSenha    = ", ds_senha = $7";
+        $arrParams[] = password_hash($dsSenha, PASSWORD_DEFAULT);
+      }
+      else
+        $sqlSenha = "";
+
+      $arrParams[] = $this->arrRequest["cd_pessoa"];
+      $nrParamCdPessoa = count($arrParams);
+
       $sqlPessoa = "UPDATE pessoa
                        SET nm_pessoa     = $1,
                            nr_telefone   = $2,
                            dt_nascimento = $3,
                            ds_sexo       = $4,
                            cd_cidade     = $5,
-                           ds_email      = $6,
-                           ds_senha      = $7
-                     WHERE cd_pessoa = $8
+                           ds_email      = $6
+                           {$sqlSenha}
+                     WHERE cd_pessoa = \${$nrParamCdPessoa}
                  RETURNING cd_pessoa";
 
-      $this->Database->execute($sqlPessoa, [
-        $this->arrRequest["nm_pessoa"],
-        $this->arrRequest["nr_telefone"],
-        $this->arrRequest["dt_nascimento"],
-        $this->arrRequest["ds_sexo"],
-        $this->arrRequest["cd_cidade"],
-        $this->arrRequest["ds_email"],
-        $this->arrRequest["ds_senha"],
-        $this->arrRequest["cd_pessoa"]
-      ]);
+      $this->Database->execute($sqlPessoa, $arrParams);
     }
 
     /**
@@ -104,8 +118,7 @@
                p.dt_nascimento,
                p.ds_sexo,
                p.cd_cidade,
-               p.ds_email,
-               p.ds_senha
+               p.ds_email
           FROM pessoa p
          WHERE p.cd_pessoa = $1
 SQL;

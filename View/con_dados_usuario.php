@@ -23,27 +23,27 @@
     <table>
       <tr>
         <th>Nome</th>
-        <td><?= $arrUsuario["nm_pessoa"] ?? "" ?></td>
+        <td><?= h($arrUsuario["nm_pessoa"] ?? "") ?></td>
       </tr>
       <tr>
         <th>Dt. Nascimento</th>
-        <td><?= $arrUsuario["dt_nascimento"] ?? "" ?></td>
+        <td><?= h($arrUsuario["dt_nascimento"] ?? "") ?></td>
       </tr>
       <tr>
         <th>Tipo</th>
-        <td><?= $arrUsuario["tipo_usuario"] ?? "" ?></td>
+        <td><?= h($arrUsuario["tipo_usuario"] ?? "") ?></td>
       </tr>
       <tr>
         <th>Cidade</th>
-        <td><?= $arrUsuario["nm_cidade"] ?? "" ?></td>
+        <td><?= h($arrUsuario["nm_cidade"] ?? "") ?></td>
       </tr>
       <tr>
         <th>Telefone</th>
-        <td><?= $nrTelefone ?></td>
+        <td><?= h($nrTelefone) ?></td>
       </tr>
       <tr>
         <th>Email</th>
-        <td><?= $arrUsuario["ds_email"] ?? "" ?></td>
+        <td><?= h($arrUsuario["ds_email"] ?? "") ?></td>
       </tr>
     </table>
   </div>

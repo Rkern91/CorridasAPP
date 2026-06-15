@@ -1,5 +1,5 @@
 <?php
-  require_once("../auth_guard.php");
+  require_once("../admin_guard.php");
   require_once("../Controllers/ModalidadeController.php");
 
   try
@@ -32,26 +32,26 @@
     <h3>Manutenção de Modalidade</h3>
     <form action="../Controllers/ProcessActionFormController.php" id="form" method="post">
       <?php if ($cdModalidade !== ""): ?>
-        <input type="hidden" name="cd_modalidade" value="<?= $arrModalidade["cd_modalidade"] ?>">
+        <input type="hidden" name="cd_modalidade" value="<?= h($arrModalidade["cd_modalidade"]) ?>">
       <?php endif; ?>
       <input type="hidden" name="tabela" id="id_tabela" value="modalidade">
       <input type="hidden" name="tela"   id="id_tela"   value="manutencao">
       <table>
         <tr>
           <th>Modalidade</th>
-          <td colspan="3" style="text-align: left"><input type="text" name="ds_descricao" id="ds_descricao" size="40" minlength="2" value="<?= $dsDescricao ?>" oninput="validateInput(this)"></td>
+          <td colspan="3" style="text-align: left"><input type="text" name="ds_descricao" id="ds_descricao" size="40" minlength="2" value="<?= h($dsDescricao) ?>" oninput="validateInput(this)"></td>
         </tr>
         <tr>
           <th>Valor (R$)</th>
-          <td style="text-align: left"><input type="text" name="vl_valor" id="vl_valor" value="<?= $dsInscricao ?>" onchange="ajustarFormatoValores(this)"></td>
+          <td style="text-align: left"><input type="text" name="vl_valor" id="vl_valor" value="<?= h($dsInscricao) ?>" onchange="ajustarFormatoValores(this)"></td>
           <th>Distância (KM)</th>
-          <td style="text-align: left"><input type="text" name="vl_km_distancia" minlength="1" maxlength="3" size="3" id="vl_km_distancia" value="<?= $dsDistancia ?>"></td>
+          <td style="text-align: left"><input type="text" name="vl_km_distancia" minlength="1" maxlength="3" size="3" id="vl_km_distancia" value="<?= h($dsDistancia) ?>"></td>
         </tr>
         <tr>
           <th>Data</th>
-          <td style="text-align: left"><input type="date" name="dt_largada_modalidade" id="dt_largada_modalidade" value="<?= $dsData ?>"></td>
+          <td style="text-align: left"><input type="date" name="dt_largada_modalidade" id="dt_largada_modalidade" value="<?= h($dsData) ?>"></td>
           <th>Hora</th>
-          <td><input type="time" name="hr_largada_modalidade" id="hr_largada_modalidade" value="<?= $dsHora ?>"></td>
+          <td><input type="time" name="hr_largada_modalidade" id="hr_largada_modalidade" value="<?= h($dsHora) ?>"></td>
         </tr>
         <tr>
           <th>Ação:</th>

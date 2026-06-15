@@ -27,7 +27,7 @@
     <?php else: ?>
       <h3>Listagem de Inscrições</h3>
       <?php if ($dsOperacao): ?>
-        <input type="hidden" id="ds_operacao" value="<?= $dsOperacao ?>">
+        <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
         <input type="hidden" id="ds_origem"   value="inscricao">
       <?php endif; ?>
       <table>
@@ -42,13 +42,13 @@
         </tr>
         <?php foreach ($arrInscricoes as $inscricao): ?>
           <tr>
-            <td><?= $inscricao["nm_evento"] ?></td>
-            <td><?= $inscricao["dt_evento"] ?></td>
-            <td><?= $inscricao["nm_cidade"] ?></td>
-            <td><?= $inscricao["ds_equipe"] ?></td>
-            <td><?= $inscricao["ds_contato"] ?></td>
-            <td><?= $inscricao["ds_descricao"] ?></td>
-            <td style="text-align: center"><a href="man_inscricao.php?cd_evento=<?= $inscricao["cd_evento"] ?>&cd_pessoa=<?= $cdPessoa ?>">Alterar Inscrição</a></td>
+            <td><?= h($inscricao["nm_evento"]) ?></td>
+            <td><?= h($inscricao["dt_evento"]) ?></td>
+            <td><?= h($inscricao["nm_cidade"]) ?></td>
+            <td><?= h($inscricao["ds_equipe"]) ?></td>
+            <td><?= h($inscricao["ds_contato"]) ?></td>
+            <td><?= h($inscricao["ds_descricao"]) ?></td>
+            <td style="text-align: center"><a href="man_inscricao.php?cd_evento=<?= h($inscricao["cd_evento"]) ?>&cd_pessoa=<?= h($cdPessoa) ?>">Alterar Inscrição</a></td>
           </tr>
         <?php endforeach; ?>
       </table>

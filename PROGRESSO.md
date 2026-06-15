@@ -211,7 +211,7 @@ evento; editar próprios dados e extrato; como comum, inscrever-se e gerenciar i
 
 ---
 
-## Fase 4 — Views e novo layout ⏳ AGUARDANDO TESTE
+## Fase 4 — Views e novo layout ✅ (commit `597fa5a`)
 
 Tema escolhido pelo dev: **Profissional Sóbrio (claro)** — fundo claro, sidebar
 azul-ardósia (#243447), acento azul (#2563eb). CSS puro, sem framework.
@@ -261,7 +261,66 @@ azul-ardósia (#243447), acento azul (#2563eb). CSS puro, sem framework.
 
 ---
 
-## Próxima fase
-**Fase 5 — Separação de papéis (admin × usuário):** controle de perfil sobre `cd_id_tipo`
-(sem mudança de schema), **protegendo rotas/telas administrativas** por perfil; tratar
-hashing de senha (`password_hash`/`password_verify`). Iniciar após validação da Fase 4.
+## Fase 5 — Separação de papéis (admin × usuário) + segurança ⏳ AGUARDANDO TESTE
+
+Decisões do dev: hashing **ampliando a coluna** + upgrade no login; **output escaping** já
+nesta fase.
+
+### Controle de acesso por perfil (sobre `cd_id_tipo`, sem mudança no domínio)
+- Novo `auth_guard.php` (já existia) + novo **`admin_guard.php`** (exige `cd_id_tipo = 1`).
+- **Telas administrativas** passaram a usar `admin_guard`: `sel_cidade`, `man_cidade`,
+  `sel_modalidade`, `man_modalidade`, `man_evento`. `sel_evento` segue com `auth_guard`
+  (o comum precisa para se inscrever).
+- **`ProcessActionFormController` (endpoint de escrita) agora valida permissão** — esse é
+  o bloqueio que importa, pois um comum poderia postar direto:
+  - `pessoa/inserir` é **público** (cadastro novo); demais ações exigem login;
+  - `cidade/evento/modalidade` → **só admin**;
+  - em ações de `pessoa`/`inscricao`, o `cd_pessoa` é **forçado para o da sessão** (o
+    usuário só mexe nos próprios dados).
+
+### Hashing de senha
+- **`ds_senha` ampliada para `VARCHAR(255)`** (ALTER no banco + DDL `sql/` atualizado) —
+  única mudança de schema, autorizada pelo dev (bcrypt = 60 chars não cabe em 50).
+- `FormUsuario::inserirAcao`/`atualizarAcao` usam **`password_hash`**; no update, a senha
+  só muda se informada (em branco mantém a atual) — e a tela **não pré-preenche** a senha.
+  `funcoes.js` passou a exigir senha só no cadastro novo.
+- **`Usuario::realizarLogin`**: busca por e-mail e usa **`password_verify`**; se a senha
+  estiver em **texto puro (legado)**, autentica e **re-grava com hash na hora** (upgrade
+  transparente). `obterDadosPessoa` deixou de trazer `ds_senha` para a View.
+
+### Output escaping (XSS)
+- Novo helper **`h()`** (`htmlspecialchars`) em `helpers.inc.php` (carregado também no
+  `header.php`). Aplicado às saídas dinâmicas de **todas as Views** (dados e valores
+  refletidos do request). Em `erro.php`, a mensagem é escapada; os links continuam HTML.
+
+### Verificação feita (contêineres no ar, porta 8082)
+- `php -l` em todos os arquivos: sem erros. SQL dinâmico do update conferido ($7/$8).
+- **Senha:** login do admin com `12345` (texto puro) → 302 e a senha virou **bcrypt**;
+  login seguinte autentica via hash; senha errada fica na tela com mensagem; cadastro novo
+  já grava **bcrypt** (verify OK).
+- **Perfil:** comum em telas admin → 302 p/ `erro.php` ("Acesso negado…"); admin nessas
+  telas → 200; comum em telas comuns → 200; comum tentando **inserir cidade via POST** →
+  bloqueado e **nada criado no banco**.
+- **Escaping:** 80 usos de `h()` nas Views; `h("<script>…")` → escapado.
+
+### Como testar manualmente
+1. Logar como admin e como comum (senhas atuais; serão migradas no 1º login).
+2. Comum: tentar abrir `man_evento.php`/`sel_cidade.php` pela URL → deve dar "Acesso negado".
+3. Editar os próprios dados deixando a senha **em branco** (mantém) e depois trocando a senha.
+4. Admin: CRUD de cidade/modalidade/evento normalmente.
+
+## Pendências / dúvidas em aberto para o desenvolvedor
+- **`FormUsuario::deletarAcao` ainda vazio** (exclusão de conta não implementada; o fluxo
+  só faz logout). Implementar?
+- **Ownership de inscrição:** o `cd_pessoa` é forçado na escrita, mas excluir/alterar usa
+  `cd_inscricao`; falta validar que a inscrição pertence ao usuário (hardening futuro).
+- **`sql/script_inserts.sql`** ainda traz senhas-semente em texto puro (migram no 1º login).
+- **`FormEvento::obterDadosEvento` (INNER JOIN modalidade_evento):** evento sem modalidade
+  não aparece na edição (revisão futura).
+
+---
+
+## Conclusão da refatoração
+As 5 fases planejadas estão implementadas na branch `refactor` (commits `8a559a6`,
+`9cc612f`, `530a9ed`, `597fa5a` e o desta fase). Próximo passo do fluxo (seção 8 das
+instruções): **merge em `master` após a validação final do desenvolvedor**.

@@ -1,5 +1,17 @@
 <?php
   /**
+   * Escapa um valor para saída segura em HTML (defesa contra XSS).
+   * Use sempre que imprimir dados dinâmicos nas Views.
+   *
+   * @param $value
+   * @return string
+   */
+  function h($value): string
+  {
+    return htmlspecialchars((string) ($value ?? ""), ENT_QUOTES, "UTF-8");
+  }
+
+  /**
    * Retorna true se for um valor valido,
    * utilizado para verificar campos enviados por formulários
    *
@@ -10,7 +22,7 @@
   {
     return ($value !== '' && $value !== null && $value !== false);
   }
-  
+
   /**
    * Define a primeira opção do campo select como vazio.
    *

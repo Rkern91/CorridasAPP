@@ -32,10 +32,10 @@
   require("header.php");
 ?>
   <?php if ($dsOperacao): ?>
-    <input type="hidden" id="ds_operacao" value="<?= $dsOperacao ?>">
+    <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
   <?php endif; ?>
   <?php if ($dsErroLogin): ?>
-    <div class="alert alert-danger"><?= $dsErroLogin ?></div>
+    <div class="alert alert-danger"><?= h($dsErroLogin) ?></div>
   <?php endif; ?>
   <form method="post" name="form" id="form">
     <input type="hidden" name="tabela" id="id_tabela" value="login">

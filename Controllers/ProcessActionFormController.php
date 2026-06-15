@@ -1,7 +1,8 @@
 <?php
   require_once("ClassLoaderController.php");
   require_once("../helpers.inc.php");
-  
+  require_once("../session.php");
+
   class ProcessActionFormController
   {
     /**
@@ -47,14 +48,47 @@
       $this->formAction = $arrRequest["f_action"];
       $this->arrRequest = $arrRequest;
     }
-    
+
     /**
-     * M�todo respons�vel por processar a requisi��o do formul�rio
-     * para cada classe do Projeto de forma din�mica.
+     * Garante que a ação é permitida ao usuário atual:
+     * - cadastro de novo usuário (pessoa/inserir) é público;
+     * - demais ações exigem login;
+     * - cidade/evento/modalidade são exclusivas de administradores;
+     * - em ações sobre dados próprios (pessoa/inscricao), força o cd_pessoa da sessão.
+     * @return void
+     */
+    protected function validarPermissao()
+    {
+      $tabelasAdmin    = ["cidade", "evento", "modalidade"];
+      $cadastroPublico = ($this->nmTabela == "pessoa" && $this->formAction == "inserir");
+
+      if (!$cadastroPublico && !isset($_SESSION["cd_pessoa"]))
+      {
+        header("Location: ../View/login.php");
+        exit;
+      }
+
+      if (in_array($this->nmTabela, $tabelasAdmin) && (($_SESSION["id_tipo_usuario"] ?? null) != 1))
+      {
+        $dsMensagem = "Acesso negado: ação restrita a administradores.";
+        header("Location: ../View/erro.php?dsOrigem={$this->nmTabela}&dsMensagem=" . urlencode($dsMensagem));
+        exit;
+      }
+
+      //Usuário só mexe nos próprios dados/inscrições: o cd_pessoa vem da sessão, não do request.
+      if (!$cadastroPublico && in_array($this->nmTabela, ["pessoa", "inscricao"]))
+        $this->arrRequest["cd_pessoa"] = $_SESSION["cd_pessoa"];
+    }
+
+    /**
+     * Método responsável por processar a requisição do formulário
+     * para cada classe do Projeto de forma dinâmica.
      * @return void
      */
     public function callProcessAction()
     {
+      $this->validarPermissao();
+
       try
       {
         //Monta o nome do metodo que vai ser chamado na classe.

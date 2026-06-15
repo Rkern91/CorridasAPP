@@ -1,5 +1,5 @@
 <?php
-  require_once("../auth_guard.php");
+  require_once("../admin_guard.php");
   require_once("../Controllers/ModalidadeController.php");
 
   try
@@ -25,7 +25,7 @@
     <div class="container">
       <h3>Listagem de Modalidades</h3>
       <?php if ($dsOperacao): ?>
-        <input type="hidden" id="ds_operacao" value="<?= $dsOperacao ?>">
+        <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
         <input type="hidden" id="ds_origem"   value="modalidade">
       <?php endif; ?>
       <table>
@@ -39,12 +39,12 @@
         </tr>
         <?php foreach ($arrModalidades as $modalidade): ?>
           <tr>
-            <td style="text-align: center"><?= $modalidade["cd_modalidade"] ?></td>
-            <td><?= $modalidade["ds_descricao"] ?></td>
-            <td style="text-align: center"><?= $modalidade["dt_largada_modalidade"] ?></td>
-            <td style="text-align: center"><?= $modalidade["vl_km_distancia"] ?></td>
-            <td style="text-align: center">R$ <?= padronizaMoeda($modalidade["vl_valor"], 2, "sys", "pt_BR") ?></td>
-            <td style="text-align: center"><a href="man_modalidade.php?cd_modalidade=<?= $modalidade["cd_modalidade"] ?>">Editar</a></td>
+            <td style="text-align: center"><?= h($modalidade["cd_modalidade"]) ?></td>
+            <td><?= h($modalidade["ds_descricao"]) ?></td>
+            <td style="text-align: center"><?= h($modalidade["dt_largada_modalidade"]) ?></td>
+            <td style="text-align: center"><?= h($modalidade["vl_km_distancia"]) ?></td>
+            <td style="text-align: center">R$ <?= h(padronizaMoeda($modalidade["vl_valor"], 2, "sys", "pt_BR")) ?></td>
+            <td style="text-align: center"><a href="man_modalidade.php?cd_modalidade=<?= h($modalidade["cd_modalidade"]) ?>">Editar</a></td>
           </tr>
         <?php endforeach; ?>
       </table>

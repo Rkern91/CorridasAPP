@@ -68,6 +68,6 @@
   require("header.php");
 ?>
   <h3>Ops!</h3>
-  <div class="alert alert-danger"><?= $dsMsg ?></div>
+  <div class="alert alert-danger"><?= h($dsMsg) ?></div>
   <p><?= $dsLinkRetorno ?></p>
 <?php require("footer.php"); ?>

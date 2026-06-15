@@ -1,5 +1,5 @@
 <?php
-  require_once("../auth_guard.php");
+  require_once("../admin_guard.php");
   require_once("../Controllers/CidadeController.php");
 
   try
@@ -31,14 +31,14 @@
     <h3>Manutenção de Cidade</h3>
     <form action="../Controllers/ProcessActionFormController.php" id="form" method="post">
       <?php if ($cdCidade !== ""): ?>
-        <input type="hidden" name="cd_cidade" value="<?= $arrCidade["cd_cidade"] ?>">
+        <input type="hidden" name="cd_cidade" value="<?= h($arrCidade["cd_cidade"]) ?>">
       <?php endif; ?>
       <input type="hidden" name="tabela" id="id_tabela" value="cidade">
       <input type="hidden" name="tela"   id="id_tela"   value="manutencao">
       <table>
         <tr>
           <th>Cidade</th>
-          <td colspan="3" style="text-align: left"><input type="text" name="nm_cidade" id="nm_cidade" size="40" minlength="2" value="<?= $arrCidade["nm_cidade"] ?? "" ?>" oninput="validateInput(this)"></td>
+          <td colspan="3" style="text-align: left"><input type="text" name="nm_cidade" id="nm_cidade" size="40" minlength="2" value="<?= h($arrCidade["nm_cidade"] ?? "") ?>" oninput="validateInput(this)"></td>
         </tr>
         <tr>
           <th>Estado</th>
@@ -46,7 +46,7 @@
             <select name="cd_uf" id="cd_uf">
               <option value=""></option>
               <?php foreach ($arrEstados as $uf): ?>
-                <option value="<?= $uf["value"] ?>" <?= ($cdUf == $uf["value"]) ? "selected" : "" ?>><?= $uf["description"] ?></option>
+                <option value="<?= h($uf["value"]) ?>" <?= ($cdUf == $uf["value"]) ? "selected" : "" ?>><?= h($uf["description"]) ?></option>
               <?php endforeach; ?>
             </select>
           </td>

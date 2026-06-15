@@ -34,7 +34,7 @@
     <div class="container">
       <h3>Listagem de Eventos</h3>
       <?php if ($dsOperacao): ?>
-        <input type="hidden" id="ds_operacao" value="<?= $dsOperacao ?>">
+        <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
         <input type="hidden" id="ds_origem"   value="evento">
       <?php endif; ?>
       <table>
@@ -60,16 +60,16 @@
             }
           ?>
           <tr>
-            <td style="text-align: center"><?= $evento["cd_evento"] ?></td>
-            <td><?= $evento["nm_evento"] ?></td>
-            <td style="text-align: center"><?= $evento["dt_evento"] ?></td>
-            <td><?= $evento["nm_cidade"] ?></td>
-            <td style="text-align: center" title="<?= $dsTipModalidade ?>"><?= $evento["ds_modalidades"] ?></td>
+            <td style="text-align: center"><?= h($evento["cd_evento"]) ?></td>
+            <td><?= h($evento["nm_evento"]) ?></td>
+            <td style="text-align: center"><?= h($evento["dt_evento"]) ?></td>
+            <td><?= h($evento["nm_cidade"]) ?></td>
+            <td style="text-align: center" title="<?= h($dsTipModalidade) ?>"><?= h($evento["ds_modalidades"]) ?></td>
             <td style="text-align: center">
               <?php if ($idUsuarioComum): ?>
-                <a href="man_inscricao.php?cd_evento=<?= $evento["cd_evento"] ?>&cd_pessoa=<?= $cdPessoa ?>">Inscrever-se!</a>
+                <a href="man_inscricao.php?cd_evento=<?= h($evento["cd_evento"]) ?>&cd_pessoa=<?= h($cdPessoa) ?>">Inscrever-se!</a>
               <?php else: ?>
-                <a href="man_evento.php?cd_evento=<?= $evento["cd_evento"] ?>">Editar</a>
+                <a href="man_evento.php?cd_evento=<?= h($evento["cd_evento"]) ?>">Editar</a>
               <?php endif; ?>
             </td>
           </tr>

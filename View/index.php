@@ -7,7 +7,7 @@
   require("header.php");
 ?>
   <?php if ($dsOperacao): ?>
-    <input type="hidden" id="ds_operacao" value="<?= $dsOperacao ?>">
+    <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
   <?php endif; ?>
   <div class="container">
     <h3>Bem-vindo ao CorridasAPP</h3>

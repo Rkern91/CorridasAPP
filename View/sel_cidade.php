@@ -1,5 +1,5 @@
 <?php
-  require_once("../auth_guard.php");
+  require_once("../admin_guard.php");
   require_once("../Controllers/CidadeController.php");
 
   try
@@ -25,7 +25,7 @@
     <div class="container">
       <h3>Listagem de Cidades</h3>
       <?php if ($dsOperacao): ?>
-        <input type="hidden" id="ds_operacao" value="<?= $dsOperacao ?>">
+        <input type="hidden" id="ds_operacao" value="<?= h($dsOperacao) ?>">
         <input type="hidden" id="ds_origem"   value="cidade">
       <?php endif; ?>
       <table>
@@ -36,9 +36,9 @@
         </tr>
         <?php foreach ($arrCidades as $cidade): ?>
           <tr>
-            <td style="text-align: center"><?= $cidade["cd_cidade"] ?></td>
-            <td><?= $cidade["nm_cidade"] ?></td>
-            <td style="text-align: center"><a href="man_cidade.php?cd_cidade=<?= $cidade["cd_cidade"] ?>">Editar</a></td>
+            <td style="text-align: center"><?= h($cidade["cd_cidade"]) ?></td>
+            <td><?= h($cidade["nm_cidade"]) ?></td>
+            <td style="text-align: center"><a href="man_cidade.php?cd_cidade=<?= h($cidade["cd_cidade"]) ?>">Editar</a></td>
           </tr>
         <?php endforeach; ?>
       </table>

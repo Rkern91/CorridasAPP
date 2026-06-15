@@ -25,38 +25,38 @@
   <div class="container">
     <h3>Inscrição</h3>
     <form action="../Controllers/ProcessActionFormController.php" id="form" method="post">
-      <input type="hidden" name="cd_evento" value="<?= $arrEvento["cd_evento"] ?? "" ?>">
-      <input type="hidden" name="cd_pessoa" value="<?= $_SESSION["cd_pessoa"] ?>">
+      <input type="hidden" name="cd_evento" value="<?= h($arrEvento["cd_evento"] ?? "") ?>">
+      <input type="hidden" name="cd_pessoa" value="<?= h($_SESSION["cd_pessoa"]) ?>">
       <?php if ($idEdicao): ?>
-        <input type="hidden" name="cd_inscricao" value="<?= $cdInscricao ?>">
+        <input type="hidden" name="cd_inscricao" value="<?= h($cdInscricao) ?>">
       <?php endif; ?>
       <input type="hidden" name="tabela" id="id_tabela" value="inscricao">
       <input type="hidden" name="tela"   id="id_tela"   value="manutencao">
       <table>
         <tr>
           <th>Evento</th>
-          <td style="text-align: left"><?= $arrEvento["nm_evento"] ?? "" ?></td>
+          <td style="text-align: left"><?= h($arrEvento["nm_evento"] ?? "") ?></td>
           <th>Cidade</th>
-          <td style="text-align: left"><?= $arrEvento["nm_cidade"] ?? "" ?></td>
+          <td style="text-align: left"><?= h($arrEvento["nm_cidade"] ?? "") ?></td>
         </tr>
         <tr>
           <th>Data</th>
-          <td style="text-align: left"><?= $arrEvento["dt_evento"] ?? "" ?></td>
+          <td style="text-align: left"><?= h($arrEvento["dt_evento"] ?? "") ?></td>
           <th>Modalidades</th>
           <td style="text-align: left">
             <select name="cd_modalidade" id="cd_modalidade">
               <option value=""></option>
               <?php foreach ($arrModalidades as $modal): ?>
-                <option value="<?= $modal["value"] ?>" <?= ($cdModalidadeSel == $modal["value"]) ? "selected" : "" ?>><?= $modal["description"] ?></option>
+                <option value="<?= h($modal["value"]) ?>" <?= ($cdModalidadeSel == $modal["value"]) ? "selected" : "" ?>><?= h($modal["description"]) ?></option>
               <?php endforeach; ?>
             </select>
           </td>
         </tr>
         <tr>
           <th>Contato</th>
-          <td style="text-align: left"><input type="text" name="ds_contato" id="ds_contato" size="25" minlength="2" value="<?= $arrEvento["ds_contato"] ?? "" ?>"></td>
+          <td style="text-align: left"><input type="text" name="ds_contato" id="ds_contato" size="25" minlength="2" value="<?= h($arrEvento["ds_contato"] ?? "") ?>"></td>
           <th>Equipe</th>
-          <td style="text-align: left"><input type="text" name="ds_equipe" id="ds_equipe" size="25" minlength="2" value="<?= $arrEvento["ds_equipe"] ?? "" ?>" oninput="validateInput(this)"></td>
+          <td style="text-align: left"><input type="text" name="ds_equipe" id="ds_equipe" size="25" minlength="2" value="<?= h($arrEvento["ds_equipe"] ?? "") ?>" oninput="validateInput(this)"></td>
         </tr>
         <tr>
           <th>Ação:</th>

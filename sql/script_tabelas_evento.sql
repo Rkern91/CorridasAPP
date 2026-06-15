@@ -53,7 +53,8 @@ CREATE TABLE IF NOT EXISTS pessoa (
   ds_fator_rh   VARCHAR(10),
   cd_id_tipo	INTEGER DEFAULT 2,
   ds_email	VARCHAR(50) NOT NULL UNIQUE,
-  ds_senha	VARCHAR(50) NOT NULL,
+  ds_senha	VARCHAR(255) NOT NULL, -- comporta hash (password_hash); senhas em texto puro são migradas no login
+
   CONSTRAINT pk_cd_pessoa     PRIMARY KEY (cd_pessoa),
   CONSTRAINT fk_pessoa_cidade FOREIGN KEY (cd_cidade)  REFERENCES cidade (cd_cidade),
   CONSTRAINT fk_cd_id_tipo    FOREIGN KEY (cd_id_tipo) REFERENCES tipo_pessoa (cd_id_tipo)
