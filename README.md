@@ -65,12 +65,6 @@ Perfis de usuário:
 * `1` = administrador
 * `2` = usuário comum
 
-## Documentação
-
-* Padrões de código: [docs/CODING_STANDARDS.md](docs/CODING_STANDARDS.md)
-* Backlog: [docs/PENDENCIAS.md](docs/PENDENCIAS.md)
-* Histórico da refatoração: [docs/PROGRESSO.md](docs/PROGRESSO.md)
-
 ---
 
 Este README é um documento vivo e deve evoluir junto com o projeto.
