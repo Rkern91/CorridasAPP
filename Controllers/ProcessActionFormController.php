@@ -11,11 +11,11 @@
      * @var array|string[]
      */
     protected array $opNmClass = [
-      "cidade"      => "FormCidade",
-      "evento"      => "FormEvento",
-      "modalidade"  => "FormModalidade",
-      "pessoa"      => "FormUsuario",
-      "inscricao"   => "FormInscricao"
+      "cidade"      => "Cidade",
+      "evento"      => "Evento",
+      "modalidade"  => "Modalidade",
+      "pessoa"      => "Pessoa",
+      "inscricao"   => "Inscricao"
     ];
     
     /**

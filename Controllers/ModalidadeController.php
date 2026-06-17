@@ -1,20 +1,20 @@
 <?php
-  require_once("../Model/FormModalidade.php");
+  require_once("../Model/Modalidade.php");
 
   class ModalidadeController
   {
     /**
      * Model de modalidade.
-     * @var FormModalidade
+     * @var Modalidade
      */
-    private FormModalidade $FormModalidade;
+    private Modalidade $Modalidade;
 
     /**
      * Construtor de Classe
      */
     public function __construct()
     {
-      $this->FormModalidade = new FormModalidade($_REQUEST);
+      $this->Modalidade = new Modalidade($_REQUEST);
     }
 
     /**
@@ -23,7 +23,7 @@
      */
     public function obterListagemModalidades(): array
     {
-      return $this->FormModalidade->obterListagemModalidades();
+      return $this->Modalidade->obterListagemModalidades();
     }
 
     /**
@@ -32,6 +32,6 @@
      */
     public function obterModalidade(): array
     {
-      return $this->FormModalidade->obterModalidade();
+      return $this->Modalidade->obterModalidade();
     }
   }

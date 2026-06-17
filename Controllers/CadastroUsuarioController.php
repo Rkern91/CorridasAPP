@@ -1,20 +1,20 @@
 <?php
-  require_once("../Model/FormUsuario.php");
+  require_once("../Model/Pessoa.php");
 
   class CadastroUsuarioController
   {
     /**
      * Model de usuário.
-     * @var FormUsuario
+     * @var Pessoa
      */
-    private FormUsuario $FormUsuario;
+    private Pessoa $Pessoa;
 
     /**
      * Construtor de Classe
      */
     public function __construct()
     {
-      $this->FormUsuario = new FormUsuario($_REQUEST);
+      $this->Pessoa = new Pessoa($_REQUEST);
     }
 
     /**
@@ -23,7 +23,7 @@
      */
     public function obterDadosPessoa(): array
     {
-      return $this->FormUsuario->obterDadosPessoa();
+      return $this->Pessoa->obterDadosPessoa();
     }
 
     /**
@@ -32,7 +32,7 @@
      */
     public function obterExtratoUsuario(): array
     {
-      return $this->FormUsuario->obterExtratoUsuario();
+      return $this->Pessoa->obterExtratoUsuario();
     }
 
     /**
@@ -41,6 +41,6 @@
      */
     public function obterCidades(): array
     {
-      return $this->FormUsuario->obterCidades();
+      return $this->Pessoa->obterCidades();
     }
   }

@@ -1,20 +1,20 @@
 <?php
-  require_once("../Model/FormCidade.php");
+  require_once("../Model/Cidade.php");
 
   class CidadeController
   {
     /**
      * Model de cidade.
-     * @var FormCidade
+     * @var Cidade
      */
-    private FormCidade $FormCidade;
+    private Cidade $Cidade;
 
     /**
      * Construtor de Classe
      */
     public function __construct()
     {
-      $this->FormCidade = new FormCidade($_REQUEST);
+      $this->Cidade = new Cidade($_REQUEST);
     }
 
     /**
@@ -23,7 +23,7 @@
      */
     public function obterListagemCidades(): array
     {
-      return $this->FormCidade->obterListagemCidades();
+      return $this->Cidade->obterListagemCidades();
     }
 
     /**
@@ -32,7 +32,7 @@
      */
     public function obterCidade(): array
     {
-      return $this->FormCidade->obterCidade();
+      return $this->Cidade->obterCidade();
     }
 
     /**
@@ -41,6 +41,6 @@
      */
     public function obterEstados(): array
     {
-      return $this->FormCidade->obterEstados();
+      return $this->Cidade->obterEstados();
     }
   }

@@ -2,7 +2,7 @@
   require_once("Database.php");
   require_once("../helpers.inc.php");
 
-  class FormCidade
+  class Cidade
   {
     /**
      * Camada de acesso ao Banco de Dados
