@@ -43,4 +43,13 @@
     {
       return $this->Pessoa->obterCidades();
     }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function obterListagemUsuarios(): array
+    {
+      return $this->Pessoa->obterListagemUsuarios();
+    }
   }

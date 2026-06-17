@@ -23,6 +23,7 @@
           ["Eventos",      "sel_evento.php",                                 ["sel_evento.php", "man_evento.php"]],
           ["Modalidades",  "sel_modalidade.php",                             ["sel_modalidade.php", "man_modalidade.php"]],
           ["Cidades",      "sel_cidade.php",                                 ["sel_cidade.php", "man_cidade.php"]],
+          ["Usuários",     "sel_usuario.php",                                ["sel_usuario.php", "man_usuario.php"]],
           ["Meu Cadastro", "man_cadastro_usuario.php?cd_pessoa={$cdPessoa}", ["man_cadastro_usuario.php"]],
           ["Extrato",      "con_dados_usuario.php?cd_pessoa={$cdPessoa}",    ["con_dados_usuario.php"]]
         ]

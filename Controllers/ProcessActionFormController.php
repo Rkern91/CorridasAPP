@@ -15,6 +15,7 @@
       "evento"      => "Evento",
       "modalidade"  => "Modalidade",
       "pessoa"      => "Pessoa",
+      "usuario"     => "Pessoa",
       "inscricao"   => "Inscricao"
     ];
     
@@ -53,13 +54,13 @@
      * Garante que a ação é permitida ao usuário atual:
      * - cadastro de novo usuário (pessoa/inserir) é público;
      * - demais ações exigem login;
-     * - cidade/evento/modalidade são exclusivas de administradores;
+     * - cidade/evento/modalidade/usuario são exclusivas de administradores;
      * - em ações sobre dados próprios (pessoa/inscricao), força o cd_pessoa da sessão.
      * @return void
      */
     protected function validarPermissao()
     {
-      $tabelasAdmin    = ["cidade", "evento", "modalidade"];
+      $tabelasAdmin    = ["cidade", "evento", "modalidade", "usuario"];
       $cadastroPublico = ($this->nmTabela == "pessoa" && $this->formAction == "inserir");
 
       if (!$cadastroPublico && !isset($_SESSION["cd_pessoa"]))
