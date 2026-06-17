@@ -5,3 +5,6 @@
 
 # Scripts de teste manual (descartáveis)
 test/
+
+# Ignorar arquivos md usados para o claude
+docs/
