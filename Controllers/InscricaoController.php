@@ -1,20 +1,20 @@
 <?php
-  require_once("../Model/FormInscricao.php");
+  require_once("../Model/Inscricao.php");
 
   class InscricaoController
   {
     /**
      * Model de inscrição.
-     * @var FormInscricao
+     * @var Inscricao
      */
-    private FormInscricao $FormInscricao;
+    private Inscricao $Inscricao;
 
     /**
      * Construtor de Classe
      */
     public function __construct()
     {
-      $this->FormInscricao = new FormInscricao($_REQUEST);
+      $this->Inscricao = new Inscricao($_REQUEST);
     }
 
     /**
@@ -23,7 +23,7 @@
      */
     public function obterListagemInscricoes(): array
     {
-      return $this->FormInscricao->obterListagemInscricoes();
+      return $this->Inscricao->obterListagemInscricoes();
     }
 
     /**
@@ -32,7 +32,7 @@
      */
     public function obterDadosEventoInscricao(): array
     {
-      return $this->FormInscricao->obterDadosEventoInscricao();
+      return $this->Inscricao->obterDadosEventoInscricao();
     }
 
     /**
@@ -41,6 +41,6 @@
      */
     public function obterModalidadesEvento(): array
     {
-      return $this->FormInscricao->obterModalidadesEvento();
+      return $this->Inscricao->obterModalidadesEvento();
     }
   }

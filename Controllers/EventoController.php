@@ -1,20 +1,20 @@
 <?php
-  require_once("../Model/FormEvento.php");
+  require_once("../Model/Evento.php");
 
   class EventoController
   {
     /**
      * Model de evento.
-     * @var FormEvento
+     * @var Evento
      */
-    private FormEvento $FormEvento;
+    private Evento $Evento;
 
     /**
      * Construtor de Classe
      */
     public function __construct()
     {
-      $this->FormEvento = new FormEvento($_REQUEST);
+      $this->Evento = new Evento($_REQUEST);
     }
 
     /**
@@ -23,7 +23,7 @@
      */
     public function obterListagemEventos(): array
     {
-      return $this->FormEvento->obterListagemEventos();
+      return $this->Evento->obterListagemEventos();
     }
 
     /**
@@ -32,7 +32,7 @@
      */
     public function obterDadosEvento(): array
     {
-      return $this->FormEvento->obterDadosEvento();
+      return $this->Evento->obterDadosEvento();
     }
 
     /**
@@ -41,7 +41,7 @@
      */
     public function obterCidades(): array
     {
-      return $this->FormEvento->obterCidades();
+      return $this->Evento->obterCidades();
     }
 
     /**
@@ -50,6 +50,6 @@
      */
     public function obterModalidades(): array
     {
-      return $this->FormEvento->obterModalidades();
+      return $this->Evento->obterModalidades();
     }
   }
