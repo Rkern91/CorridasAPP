@@ -7,4 +7,5 @@
 test/
 
 # Ignorar arquivos md usados para o claude
+CLAUDE.md
 docs/
