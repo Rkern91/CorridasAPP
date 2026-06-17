@@ -158,6 +158,29 @@ SQL;
     }
 
     /**
+     * Retorna a listagem de usuários para a tela administrativa.
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function obterListagemUsuarios(): array
+    {
+      $sqlUsuarios =<<<SQL
+        SELECT p.cd_pessoa,
+               p.nm_pessoa,
+               p.ds_email,
+               (CASE
+                  WHEN p.cd_id_tipo = 1 THEN 'Administrador'
+                  ELSE 'Comum'
+                END) AS tipo_usuario
+          FROM pessoa p
+         ORDER BY p.nm_pessoa
+SQL;
+
+      return $this->Database->select($sqlUsuarios);
+    }
+
+    /**
      * Retorna a lista de cidades para popular o campo de seleção.
      *
      * @return array Lista de [value, description].
