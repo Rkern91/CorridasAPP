@@ -43,7 +43,7 @@
     <table>
       <tr>
         <th>Email</th>
-        <td><input type="email" placeholder="Email" name="ds_email" id="ds_email" size="30" minlength="2"></td>
+        <td><input type="email" placeholder="Email" name="ds_email" id="ds_email" minlength="2"></td>
       </tr>
       <tr>
         <th>Senha</th>

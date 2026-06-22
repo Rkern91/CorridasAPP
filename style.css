@@ -192,6 +192,7 @@ select {
   font-family:    var(--font);
   color:          var(--text);
   background:      #fff;
+  width:          100%;
   max-width:      100%;
 }
 
