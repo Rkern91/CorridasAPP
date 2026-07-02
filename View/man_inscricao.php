@@ -32,7 +32,7 @@
       <?php endif; ?>
       <input type="hidden" name="tabela" id="id_tabela" value="inscricao">
       <input type="hidden" name="tela"   id="id_tela"   value="manutencao">
-      <table>
+      <table class="ficha">
         <tr>
           <th>Evento</th>
           <td style="text-align: left"><?= h($arrEvento["nm_evento"] ?? "") ?></td>

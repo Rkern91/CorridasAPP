@@ -33,6 +33,18 @@
           ["Meu Cadastro",      "man_cadastro_usuario.php?cd_pessoa={$cdPessoa}", ["man_cadastro_usuario.php"]],
           ["Extrato",           "con_dados_usuario.php?cd_pessoa={$cdPessoa}",    ["con_dados_usuario.php"]]
         ];
+
+    // Caminho de migalhas: Início » seção ativa (deduzido do menu)
+    $dsSecaoAtiva = "";
+
+    foreach ($itensMenu as $item)
+    {
+      if (in_array($atual, $item[2]))
+      {
+        $dsSecaoAtiva = $item[0];
+        break;
+      }
+    }
   }
 ?>
 <!DOCTYPE html>
@@ -58,7 +70,15 @@
         <a class="nav-link logout" href="logout.php?cd_pessoa=<?= $cdPessoa ?>">Sair</a>
       </div>
     </aside>
-    <main class="content">
+    <div class="main">
+      <div class="crumbs">
+        <?php if ($dsSecaoAtiva !== "" && $atual !== "index.php"): ?>
+          <a href="index.php">Início</a> &raquo; <b><?= h($dsSecaoAtiva) ?></b>
+        <?php else: ?>
+          <b>Início</b>
+        <?php endif; ?>
+      </div>
+      <main class="content">
 <?php else: ?>
   <div class="auth-wrap">
     <div class="auth-card<?= ($layoutLargo ?? false) ? " wide" : "" ?>">

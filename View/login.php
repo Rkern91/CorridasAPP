@@ -40,7 +40,7 @@
   <form method="post" name="form" id="form">
     <input type="hidden" name="tabela" id="id_tabela" value="login">
     <input type="hidden" name="tela"   id="id_tela"   value="login">
-    <table>
+    <table class="ficha">
       <tr>
         <th>Email</th>
         <td><input type="email" placeholder="Email" name="ds_email" id="ds_email" minlength="2"></td>

@@ -2,7 +2,8 @@
   $layoutSidebar = $layoutSidebar ?? true;
 ?>
 <?php if ($layoutSidebar): ?>
-    </main>
+      </main>
+    </div>
   </div>
 <?php else: ?>
     </div>

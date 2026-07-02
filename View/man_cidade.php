@@ -35,7 +35,7 @@
       <?php endif; ?>
       <input type="hidden" name="tabela" id="id_tabela" value="cidade">
       <input type="hidden" name="tela"   id="id_tela"   value="manutencao">
-      <table>
+      <table class="ficha">
         <tr>
           <th>Cidade</th>
           <td colspan="3" style="text-align: left"><input type="text" name="nm_cidade" id="nm_cidade" size="40" minlength="2" value="<?= h($arrCidade["nm_cidade"] ?? "") ?>" oninput="validateInput(this)"></td>
