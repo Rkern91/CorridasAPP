@@ -36,7 +36,7 @@
       <?php endif; ?>
       <input type="hidden" name="tabela" id="id_tabela" value="modalidade">
       <input type="hidden" name="tela"   id="id_tela"   value="manutencao">
-      <table>
+      <table class="ficha">
         <tr>
           <th>Modalidade</th>
           <td colspan="3" style="text-align: left"><input type="text" name="ds_descricao" id="ds_descricao" size="40" minlength="2" value="<?= h($dsDescricao) ?>" oninput="validateInput(this)"></td>

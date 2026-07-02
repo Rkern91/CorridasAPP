@@ -20,7 +20,7 @@
 ?>
   <div class="container">
     <h3>Dados do Usuário</h3>
-    <table>
+    <table class="ficha">
       <tr>
         <th>Nome</th>
         <td><?= h($arrUsuario["nm_pessoa"] ?? "") ?></td>

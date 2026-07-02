@@ -50,7 +50,7 @@
       <input type="hidden" name="tela"               id="id_tela"            value="manutencao">
       <input type="hidden" name="arr_cd_modalidades" id="arr_cd_modalidades" value="<?= h($dsCdsModal) ?>">
       <input type="hidden" name="qt_modalidades"     id="qt_modalidades"     value="<?= h($qtModal) ?>">
-      <table>
+      <table class="ficha">
         <tr>
           <th>Nome</th>
           <td colspan="3" style="text-align: left"><input type="text" name="nm_evento" id="nm_evento" size="40" minlength="2" value="<?= h($dsNome) ?>" oninput="validateInput(this)"></td>

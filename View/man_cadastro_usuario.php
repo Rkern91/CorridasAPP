@@ -39,7 +39,7 @@
       <?php endif; ?>
       <input type="hidden" name="tabela" id="id_tabela" value="pessoa">
       <input type="hidden" name="tela"   id="id_tela"   value="manutencao">
-      <table>
+      <table class="ficha">
         <tr>
           <th>Nome</th>
           <td style="text-align: left"><input type="text" name="nm_pessoa" id="nm_pessoa" size="30" minlength="2" value="<?= h($nmPessoa) ?>" oninput="validateInput(this)"></td>
