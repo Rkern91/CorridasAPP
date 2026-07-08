@@ -5,11 +5,14 @@
   //   $layoutSidebar (bool)   - true = layout interno com menu lateral (padrão)
   //                             false = layout centralizado (login/cadastro)
   //   $layoutLargo   (bool)   - cartão largo no layout centralizado
+  //   $layoutModerno (bool)   - true = conteúdo no Tema Padrão (cards sobre
+  //                             fundo cinza); false = tema legado (padrão)
   require_once(__DIR__ . "/../session.php");
   require_once(__DIR__ . "/../helpers.inc.php");
 
   $tituloPagina  = $tituloPagina  ?? "CorridasAPP";
   $layoutSidebar = $layoutSidebar ?? true;
+  $layoutModerno = $layoutModerno ?? false;
 
   if ($layoutSidebar)
   {
@@ -78,7 +81,7 @@
           <b>Início</b>
         <?php endif; ?>
       </div>
-      <main class="content">
+      <main class="content<?= $layoutModerno ? " content-modern" : "" ?>">
 <?php else: ?>
   <div class="auth-wrap">
     <div class="auth-card<?= ($layoutLargo ?? false) ? " wide" : "" ?>">
