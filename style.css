@@ -431,6 +431,119 @@ a:hover {
   fill:   currentColor;
 }
 
+/* ---------- Tema Padrão — telas internas migradas ----------
+   Conteúdo em cards brancos "flutuando" sobre fundo cinza-claro,
+   radius médio, sombra suave e whitespace generoso. Ativado tela a
+   tela pela View com $layoutModerno = true (classe .content-modern);
+   sidebar e breadcrumb permanecem compartilhados. */
+.content-modern {
+  background: var(--zebra);
+  padding:    22px 26px 48px;
+}
+
+.page {
+  max-width: 1040px;
+  margin:    0 auto;
+}
+
+/* Cabeçalho da página: título tipográfico + ação primária à direita */
+.page-head {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  gap:             16px;
+  flex-wrap:       wrap;
+  margin:          2px 0 18px;
+}
+
+.page-title {
+  font-size:   17px;
+  font-weight: 700;
+  margin:      0;
+}
+
+.page-sub {
+  margin:    3px 0 0;
+  font-size: 12.5px;
+  color:     var(--text-muted);
+}
+
+/* Card de conteúdo */
+.panel {
+  background:    var(--surface);
+  border:        1px solid #e2e4ee;
+  border-radius: 10px;
+  box-shadow:    0 1px 2px rgba(31, 35, 48, .05), 0 8px 24px rgba(31, 35, 48, .06);
+  overflow:      hidden;
+  margin-bottom: 20px;
+}
+
+/* Tabela arejada: sem bordas verticais, divisórias horizontais sutis */
+.table-modern { margin-bottom: 0; }
+
+.table-modern th {
+  background:     #fafbff;
+  border:         none;
+  border-bottom:  1px solid #e6e8f0;
+  padding:        10px 14px;
+  font-size:      11.5px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color:          var(--text-muted);
+}
+
+.table-modern td {
+  border:        none;
+  border-bottom: 1px solid #eef0f6;
+  padding:       10px 14px;
+  font-size:     13px;
+}
+
+.table-modern tr:last-child td       { border-bottom: none; }
+.table-modern tr:nth-child(even) td  { background: transparent; }
+.table-modern tr:hover td            { background: #f7f8fd; }
+
+.t-center { text-align: center; }
+
+/* Botões no contexto moderno: radius médio e padding folgado */
+.content-modern .btn,
+.content-modern input[type=submit] {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           6px;
+  padding:       8px 14px;
+  font-size:     12.5px;
+  border-radius: 8px;
+}
+
+.content-modern .btn svg {
+  width:  14px;
+  height: 14px;
+  fill:   currentColor;
+}
+
+/* Ação de linha: link com ícone flat monocromático */
+.link-action {
+  display:     inline-flex;
+  align-items: center;
+  gap:         5px;
+  white-space: nowrap;
+}
+
+.link-action svg {
+  width:  14px;
+  height: 14px;
+  fill:   currentColor;
+}
+
+/* Estado vazio dentro do card */
+.empty-state {
+  padding:    30px 20px;
+  margin:     0;
+  text-align: center;
+  color:      var(--text-muted);
+}
+
 /* ---------- Mensagens ---------- */
 .alert {
   padding:        7px 12px;
